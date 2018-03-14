@@ -1,3 +1,6 @@
+/*
+ * Copyright (C) 2018-2019 ERS - Alejandro Villalobos Hernandez (alevilla86@hotmail.com). All rights reserved.
+ */
 package com.ers.core.orm;
 // Generated Mar 9, 2018 2:36:46 PM by Hibernate Tools 4.3.1
 

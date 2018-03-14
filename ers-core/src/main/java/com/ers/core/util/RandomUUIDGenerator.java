@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017-2018 GCF Network Accelerator, LLC. All rights reserved.
+ * Copyright (C) 2018-2019 ERS - Alejandro Villalobos Hernandez (alevilla86@hotmail.com). All rights reserved.
  */
 package com.ers.core.util;
 

@@ -1,3 +1,6 @@
+/*
+ * Copyright (C) 2018-2019 ERS - Alejandro Villalobos Hernandez (alevilla86@hotmail.com). All rights reserved.
+ */
 package com.ers.core.rest.controller;
 
 import com.ers.core.orm.User;
