@@ -67,12 +67,13 @@
                 <!--
                 # Email configuration.
                 -->
-<!--                <unc.mail.host>10.254.1.25</unc.mail.host>
-                <unc.mail.port>25</unc.mail.port>
-                <unc.mail.username>smtpsender</unc.mail.username>
-                <unc.mail.from.email>goanywhere@networkaccel.com</unc.mail.from.email>
-                <unc.mail.password></unc.mail.password>
-                <email.subject.postfix></email.subject.postfix>-->
+<!--                
+                <ers.mail.host></ers.mail.host>
+                <ers.mail.port></ers.mail.port>
+                <ers.mail.username></ers.mail.username>
+                <ers.mail.from.email></ers.mail.from.email>
+                <ers.mail.password></ers.mail.password>
+                -->
                 
                 <!--
                 # The maximum allowed size (in bytes) before an upload gets rejected.
@@ -84,17 +85,19 @@
                 <!--
                 # Amazon S3 configuration.
                 -->
-<!--                <aws.s3.accessKey>AKIAJ6YLH3DOWALJSGDQ</aws.s3.accessKey>
-                <aws.s3.secretKey>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</aws.s3.secretKey>
-                <aws.s3.regionName>us-west-1</aws.s3.regionName>
-                <aws.s3.bucketName>unc201705prog</aws.s3.bucketName>
-                <aws.s3.keyPrefix>unc/development/</aws.s3.keyPrefix>-->
+<!--                
+                <aws.s3.accessKey></aws.s3.accessKey>
+                <aws.s3.secretKey></aws.s3.secretKey>
+                <aws.s3.regionName></aws.s3.regionName>
+                <aws.s3.bucketName></aws.s3.bucketName>
+                <aws.s3.keyPrefix></aws.s3.keyPrefix>-->
                 
                 <!--
                 # reCAPTCHA configuration
                 -->
-<!--                <recaptcha.enabled>false</recaptcha.enabled>
-                <recaptcha.secret.key>6LdDoCIUAAAAAOrn8qr0Z7SuYWbl7Q4uxaYEQrX9</recaptcha.secret.key>-->
+<!--                
+                <recaptcha.enabled>false</recaptcha.enabled>
+                <recaptcha.secret.key></recaptcha.secret.key>-->
                 
                 <!-- Only one server is deployed in this environment, so it's OK to run these tasks  -->
                 <run.single.server.tasks>true</run.single.server.tasks>
