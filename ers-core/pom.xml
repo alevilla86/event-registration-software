@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.ers</groupId>
+        <artifactId>ERS</artifactId>
+        <version>0.1</version>
+    </parent>
+    <artifactId>ers-core</artifactId>
+    <packaging>jar</packaging>
+    
+    <profiles>
+        <!--
+        ###########
+        # Local Environment
+        ###########
+        -->
+        <profile>
+            <id>development</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+                <property>
+                    <name>environment.type</name>
+                    <value>dev</value>
+                </property>
+            </activation>
+            <build>
+                <finalName>ers</finalName>
+                <resources>
+                    <resource>
+                        <directory>src/main/resources</directory>
+                        <filtering>true</filtering>
+                    </resource>
+                </resources>
+            </build>
+            <properties>
+                <maven.test.skip>true</maven.test.skip>
+                
+                <!--
+                # Database configuration.
+                # The weird escaping in URL is not a typo.
+                # The value in spring-persistence.xml has to have &amp; between query parameters, otherwise that file is not a valid XML.
+                -->
+                <database.driverClassName>com.mysql.jdbc.Driver</database.driverClassName>
+                <database.url>jdbc:mysql://localhost:3306/${database.name.local}?useUnicode=yes&amp;characterEncoding=UTF-8&amp;useSSL=false&amp;verifyServerCertificate=false</database.url>
+                <database.username>root</database.username>
+                <database.password></database.password>
+                <jdbc.pool.max.size>2</jdbc.pool.max.size>
+                
+                <!--
+                # Security configuration.
+                -->
+                <!-- Can be disabled for local testing. If deisabled won't look up for a token in the request and will auto login a defualt user. -->
+                <security.token.validator.enabled>false</security.token.validator.enabled>
+                <!-- Can be disabled for local testing. Will enforce password to comply with a specific format. -->
+                <security.password.validator.enabled>false</security.password.validator.enabled>
+                <!-- In order to test the cookies locally:
+                    1. update /etc/hosts by adding this line
+                        127.0.0.1   local.acme.com 
+                    2. Send REST requests to local.acme.com instead of localhost or 127.0.0.1
+                    Otherwise the tool you're using (e.g. POSTMAN) will not include the cookie in subsequent requests.
+                 -->
+                <security.token.cookie.name>erslocaltoken</security.token.cookie.name>
+                <security.token.cookie.domain>acme.com</security.token.cookie.domain>
+                <security.token.cookie.secure>false</security.token.cookie.secure>
+                
+                <!--
+                # Email configuration.
+                -->
+<!--                <unc.mail.host>10.254.1.25</unc.mail.host>
+                <unc.mail.port>25</unc.mail.port>
+                <unc.mail.username>smtpsender</unc.mail.username>
+                <unc.mail.from.email>goanywhere@networkaccel.com</unc.mail.from.email>
+                <unc.mail.password></unc.mail.password>
+                <email.subject.postfix></email.subject.postfix>-->
+                
+                <!--
+                # The maximum allowed size (in bytes) before an upload gets rejected.
+                1073741824 = 1GB
+                So the configured value is 10GB.
+                -->
+                <max.upload.size>10737418240</max.upload.size>
+                
+                <!--
+                # Amazon S3 configuration.
+                -->
+<!--                <aws.s3.accessKey>AKIAJ6YLH3DOWALJSGDQ</aws.s3.accessKey>
+                <aws.s3.secretKey>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</aws.s3.secretKey>
+                <aws.s3.regionName>us-west-1</aws.s3.regionName>
+                <aws.s3.bucketName>unc201705prog</aws.s3.bucketName>
+                <aws.s3.keyPrefix>unc/development/</aws.s3.keyPrefix>-->
+                
+                <!--
+                # reCAPTCHA configuration
+                -->
+<!--                <recaptcha.enabled>false</recaptcha.enabled>
+                <recaptcha.secret.key>6LdDoCIUAAAAAOrn8qr0Z7SuYWbl7Q4uxaYEQrX9</recaptcha.secret.key>-->
+                
+                <!-- Only one server is deployed in this environment, so it's OK to run these tasks  -->
+                <run.single.server.tasks>true</run.single.server.tasks>
+
+            </properties>
+        </profile>
+        
+    </profiles>
+</project>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.ers</groupId>
+        <artifactId>ERS</artifactId>
+        <version>0.1</version>
+    </parent>
+    
+    <artifactId>ers-db</artifactId>
+    <packaging>jar</packaging>
+    
+    <name>ers-db</name>
+    
+    <dependencies>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+        </dependency>
+    </dependencies>
+    
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+
+        <plugins>
+            <plugin>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-maven-plugin</artifactId>
+                <version>${liquibase.version}</version>
+                <configuration>
+                    <propertyFile>${liquibase.properties}</propertyFile>
+                    <promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>
+                    <verbose>true</verbose>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>process-resources</phase>
+                    </execution>
+                </executions>
+            </plugin>
+
+        </plugins>
+    </build>
+    
+    <profiles>
+        <!--
+        ###########
+        # Local Environment
+        ###########
+        -->
+        <profile>
+            <id>development</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+                <property>
+                    <name>environment.type</name>
+                    <value>dev</value>
+                </property>
+            </activation>
+            <properties>
+                <database.driverClassName>com.mysql.jdbc.Driver</database.driverClassName>
+                <database.url>jdbc:mysql://localhost:3306/${database.name.local}</database.url>
+                <database.username>root</database.username>
+                <unc.database.password></unc.database.password>
+            </properties>
+        </profile>
+        
+        <!--
+        ###########
+        # Dev Environment
+        ###########
+        -->
+        
+        
+        <!--
+        ###########
+        # Staging Environment
+        ###########
+        -->
+        
+        
+        <!--
+        ###########
+        # Production Environment
+        ###########
+        -->
+        
+
+    </profiles>
+    
+</project>

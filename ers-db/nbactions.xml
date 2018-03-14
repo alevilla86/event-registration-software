@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions>
+        <action>
+            <actionName>CUSTOM-Update</actionName>
+            <displayName>Update</displayName>
+            <goals>
+                <goal>resources:resources</goal>
+                <goal>liquibase:update</goal>
+                <goal>-Pdevelopment</goal>
+            </goals>
+        </action>
+    </actions>

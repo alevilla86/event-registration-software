@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.ers</groupId>
+    <artifactId>ERS</artifactId>
+    <version>0.1</version>
+    <packaging>pom</packaging>
+    
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.0.0.RELEASE</version>
+    </parent>
+    
+    <properties>
+        <!-- Maven properties -->
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        
+        <!-- MySQL driver properties -->
+        <mysql.driver.version>5.1.35</mysql.driver.version>
+        
+        <!-- Liquibase properties -->
+        <liquibase.version>3.5.3</liquibase.version>
+        <liquibase.changeLogFile>liquibase/changelog.xml</liquibase.changeLogFile>
+        <liquibase.properties>liquibase/liquibase.properties</liquibase.properties>
+        
+        <!-- Database properties -->
+        <database.name.local>ers</database.name.local>
+        
+        <slf4j.version>1.7.25</slf4j.version>
+    </properties>
+    
+    <dependencies>
+<!--
+    ****************************************************************************
+    SPRING BOOT LIBRARIES.
+    ****************************************************************************
+-->
+        <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-core</artifactId>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+        
+<!--
+    ****************************************************************************
+    LOGGING LIBRARIES.
+    ****************************************************************************
+-->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api </artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+       
+<!--
+    ****************************************************************************
+    UTILITY LIBRARIES.
+    ****************************************************************************
+--> 
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
+        
+        <dependency>
+            <groupId>commons-validator</groupId>
+            <artifactId>commons-validator</artifactId>
+            <version>1.6</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+        </dependency>
+        
+ <!--
+    ****************************************************************************
+    DATABASE LIBRARIES.
+    ****************************************************************************
+-->       
+        <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+
+
+        
+    </dependencies>
+    
+    <build>
+        <plugins>
+             <plugin>
+                <groupId>com.mycila</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <version>3.0</version>
+                <configuration>
+                    <aggregate>true</aggregate>
+                    <header>src/license/header.txt</header>
+                    <includes>
+                        <include>src/main/java/**</include>
+                        <include>src/main/resources/**</include>
+                        <include>src/test/java/**</include>
+                    </includes>
+                    <excludes>
+                        <exclude>**/*.xml</exclude>
+                        <exclude>**/*.sql</exclude>
+                        <exclude>**/*.properties</exclude>
+                        <exclude>**/*.vm</exclude>
+                    </excludes>
+                    <useDefaultExcludes>true</useDefaultExcludes>
+                    <headerDefinitions>
+                        <headerDefinition>src/license/java_style_definition.xml</headerDefinition>
+                    </headerDefinitions>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+    
+    <modules>
+        <module>ers-db</module>
+        <module>ers-core</module>
+    </modules>
+</project>
