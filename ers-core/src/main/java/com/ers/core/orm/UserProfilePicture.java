@@ -16,7 +16,7 @@ import org.hibernate.annotations.GenericGenerator;
  */
 @Entity
 @Table(name = "user_profile_picture")
-public class UserProfilePicture implements java.io.Serializable {
+public class UserProfilePicture implements java.io.Serializable, Picture {
 
     private String id;
     private String userId;
@@ -85,6 +85,7 @@ public class UserProfilePicture implements java.io.Serializable {
     }
 
     @Column(name = "picture", nullable = false)
+    @Override
     public byte[] getPicture() {
         return this.picture;
     }

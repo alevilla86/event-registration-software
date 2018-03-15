@@ -346,5 +346,34 @@ public class UserProfileService {
             throw new ErsException("Invalid picture format", ErsErrorCode.INVALID_PICTURE_FORMAT);
         }
     }
+    
+    /**
+     * Deletes all user profile pictures.
+     * 
+     * @param userId
+     * @param loggedUser
+     * @throws ErsException 
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteUserProfilePicture(User loggedUser, String userId) throws ErsException {
+        
+        UserProfile existingProfile = userProfileDao.getById(userId);
+
+        if (existingProfile == null) {
+            throw new ErsException("User profile not found", ErsErrorCode.USER_PROFILE_NOT_FOUND);
+        }
+
+        if (!StringUtils.equals(existingProfile.getUser().getId(), loggedUser.getId())) {
+            throw new ErsAccessDeniedException("You are not authorized to delete this profile picture");
+        }
+
+        userProfilePictureDao.deleteUserProfilePictures(userId);
+    }
+    
+    @Transactional(readOnly = true)
+    public boolean hasUserProfilePicture(String profileId) throws ErsException {
+        boolean result = userProfilePictureDao.hasOriginalPicture(profileId);
+        return result;
+    }
 
 }
