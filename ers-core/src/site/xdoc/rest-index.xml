@@ -14,6 +14,9 @@
             <ol>
                 <!-- Please be nice and keep them in alphabetical order -->
                 <li>
+                    <a href="./user-profile.html">User profile</a>
+                </li>
+                <li>
                     <a href="./user.html">User</a>
                 </li>
             </ol>

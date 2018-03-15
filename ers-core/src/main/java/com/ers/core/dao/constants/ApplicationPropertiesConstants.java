@@ -1,15 +1,16 @@
 /*
  * Copyright (C) 2018-2019 ERS - Alejandro Villalobos Hernandez (alevilla86@hotmail.com). All rights reserved.
  */
-package com.ers.core.util;
+package com.ers.core.dao.constants;
 
 /**
- *
+ * Contains the keys of the application-config.properties file.
+ * 
  * @author avillalobos
  */
 public interface ApplicationPropertiesConstants {
     /*
-    SECURITY PROPERTIES KEYS
+    SECURITY PROPERTIES KEYS.
     */
     public static final String SECURITY_TOKEN_VALIDATOR_ENABLED = "security.token.validator.enabled";
     public static final String SECURITY_PASSWORD_VALIDATOR_ENABLED = "security.password.validator.enabled";
@@ -19,5 +20,11 @@ public interface ApplicationPropertiesConstants {
     public static final String TOKEN_COOKIE_DOMAIN_PROP_NAME = "security.token.cookie.domain";
     public static final String TOKEN_COOKIE_SECURE_PROP_NAME = "security.token.cookie.secure";
     public static final String TOKEN_TIMEOUT_IN_MINUTES_PROP_NAME = "security.token.timeout";
+    public static final String ALLOWED_PICTURE_FILE_EXTENSIONS = "allowed.picture.file.extensions";
+    
+    /*
+    SERVER FILE UPLOAD PROPERTIES KEYS.
+    */
+    public static final String MAX_UPLOAD_SIZE = "max.upload.size";
 
 }

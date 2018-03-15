@@ -3,7 +3,7 @@
  */
 package com.ers.core.security;
 
-import com.ers.core.util.ApplicationPropertiesConstants;
+import com.ers.core.dao.constants.ApplicationPropertiesConstants;
 import com.ers.core.util.ApplicationPropertiesUtil;
 import java.util.Arrays;
 import java.util.List;

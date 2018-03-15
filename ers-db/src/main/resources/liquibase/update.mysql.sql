@@ -327,3 +327,7 @@ INSERT INTO `user_profile` (`user_id`) VALUES ('2');
 INSERT INTO `ers_user` (`id`,`email`,`password`,`first_name`,`last_name`,`type`,`status`,`failed_login_attempts`,`date_created`,`date_modified`)
 VALUES ('3','alevilla86+user@hotmail.com','$2a$12$TycjP54XU..UXi5mVXBw8eoeF6tY67n9E/SDGelyGVa.y5Xi0w8hi','User','One','USER','ENABLED','0',now(),now());
 INSERT INTO `user_profile` (`user_id`) VALUES ('3');
+
+--changeset avillalobos:adding-missing-role-2018-MAR-15-08-42
+--comment runner role was missing
+INSERT INTO `role` (`id`, `name`) VALUES ('17', 'Corredor');

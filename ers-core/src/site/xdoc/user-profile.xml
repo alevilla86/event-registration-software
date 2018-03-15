@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document xmlns="http://maven.apache.org/XDOC/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
+
+    <properties>
+        <title>User-Profile REST services</title>
+    </properties>
+    
+    <body>
+        
+        <section name="Index">
+            <macro name="toc">
+                <param name="section" value="0" />
+                <param name="fromDepth" value="0" />
+                <param name="toDepth" value="1" />
+            </macro>
+        </section>
+        
+        <section name="General">
+            <p>
+                User profile required fields:
+                <ul>
+                    <li>governmentId</li>
+                    <li>hand: LEFT | RIGHT</li>
+                    <li>dateBirth</li>
+                    <li>age</li>
+                    <li>phone</li>
+                    <li>genre: MALE | FEMALE</li>
+                    <li>country</li>
+                    <li>emergencyContactName</li>
+                    <li>emergencyContactPhone</li>
+                    <li>shirtSize: XS | S | M | L | XL | XL2</li>
+                    <li>role: for USER and ORGANIZER user types</li>
+                    <li>category: for USER user type</li>
+                </ul>
+            </p>
+        </section>
+        
+        <section name="Update user profile">
+            <p>
+                Updates the user profile of the logged user.
+            </p>
+            <subsection name="Request">
+                <ul>
+                    <li>
+                        <b>Method:</b> PUT
+                    </li>
+                    <li>
+                        <b>URI:</b> /user-profile/
+                    </li>
+                    <li>
+                        <b>Query Parameters:</b> none
+                    </li>
+                </ul>
+                <source>
+{
+    "category": "Máster",
+    "role": "Chofer",
+    "governmentId": "206150888",
+    "externalId": "10004548257349",
+    "hand": "LEFT",
+    "team": "Marisqueria Guayo - Buen Tour CR",
+    "dateBirth": "1986-01-06",
+    "age": 32,
+    "phone": "88100452",
+    "genre": "MALE",
+    "weight": "73.3",
+    "height": "172",
+    "country": "Costa Rica",
+    "state": "Guanacaste",
+    "city": "Tilarán",
+    "street1": null,
+    "street2": null,
+    "emergencyContactName": "Amalia Hernández",
+    "emergencyContactPhone": "26955596",
+    "shirtSize": "S"
+}
+                </source>
+            </subsection>
+
+            <subsection name="Response">
+                <source>
+{
+    "userId": "1",
+    "category": "Máster",
+    "role": "Chofer",
+    "governmentId": "206150888",
+    "externalId": "10004548257349",
+    "hand": "LEFT",
+    "team": "Marisqueria Guayo - Buen Tour CR",
+    "dateBirth": "1986-01-06T00:00:00.000+0000",
+    "age": 32,
+    "phone": "88100452",
+    "genre": "MALE",
+    "weight": "73.3",
+    "height": "172",
+    "country": "Costa Rica",
+    "state": "Guanacaste",
+    "city": "Tilarán",
+    "street1": null,
+    "street2": null,
+    "emergencyContactName": "Amalia Hernández",
+    "emergencyContactPhone": "26955596",
+    "shirtSize": "S"
+}                
+                </source>
+            </subsection>
+        </section>
+        
+        <section name="Get user profile">
+            <p>
+                Retrieves the user profile of the logged user.
+            </p>
+            <subsection name="Request">
+                <ul>
+                    <li>
+                        <b>Method:</b> GET
+                    </li>
+                    <li>
+                        <b>URI:</b> /user-profile
+                    </li>
+                    <li>
+                        <b>Query Parameters:</b> none
+                    </li>
+                </ul>
+            </subsection>
+
+            <subsection name="Response">
+                <source>
+{
+    "userId": "1",
+    "category": "Máster",
+    "role": "Chofer",
+    "governmentId": "206150888",
+    "externalId": "10004548257349",
+    "hand": "LEFT",
+    "team": "Marisqueria Guayo - Buen Tour CR",
+    "dateBirth": "1986-01-06T00:00:00.000+0000",
+    "age": 32,
+    "phone": "88100452",
+    "genre": "MALE",
+    "weight": "73.3",
+    "height": "172",
+    "country": "Costa Rica",
+    "state": "Guanacaste",
+    "city": "Tilarán",
+    "street1": null,
+    "street2": null,
+    "emergencyContactName": "Amalia Hernández",
+    "emergencyContactPhone": "26955596",
+    "shirtSize": "S"
+}
+                </source>
+            </subsection>
+        </section>
+    </body>
+</document>

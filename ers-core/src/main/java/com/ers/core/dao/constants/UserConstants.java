@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2018-2019 ERS - Alejandro Villalobos Hernandez (alevilla86@hotmail.com). All rights reserved.
  */
-package com.ers.core.dao.common;
+package com.ers.core.dao.constants;
 
 /**
  * Using interface to avoid instantiations.

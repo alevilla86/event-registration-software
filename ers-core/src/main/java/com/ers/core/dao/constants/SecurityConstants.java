@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2018-2019 ERS - Alejandro Villalobos Hernandez (alevilla86@hotmail.com). All rights reserved.
  */
-package com.ers.core.security.config;
+package com.ers.core.dao.constants;
 
 /**
  *
@@ -10,10 +10,7 @@ package com.ers.core.security.config;
 public interface SecurityConstants {
     
     /** Logged user when token validator is disabled. */
-    public static final String DEFAULT_USER_ID = "1";
-    
-    /** Name of the token to authenticate users. */
-    //public static final String AUTH_TOKEN_HEADER_NAME = "ers-token";
+    public static final String DEFAULT_USER_ID = "3";
     
     /** Parameter in the request to avoid to touch the token. */
     public static final String SKIP_TOKEN_TOUCH_QUERY_PARAM_NAME = "skip-token-touch";

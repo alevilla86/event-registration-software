@@ -19,7 +19,7 @@ public class UserProfileDto {
     private String hand;
     private String team;
     private Date dateBirth;
-    private int age;
+    private Integer age;
     private String phone;
     private String genre;
     private String weight;
@@ -97,11 +97,11 @@ public class UserProfileDto {
         this.dateBirth = dateBirth;
     }
 
-    public int getAge() {
+    public Integer getAge() {
         return age;
     }
 
-    public void setAge(int age) {
+    public void setAge(Integer age) {
         this.age = age;
     }
 

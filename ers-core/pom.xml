@@ -80,7 +80,8 @@
                 1073741824 = 1GB
                 So the configured value is 10GB.
                 -->
-                <max.upload.size>10737418240</max.upload.size>
+                <max.upload.size>10M</max.upload.size>
+                <max.request.size>11M</max.request.size>
                 
                 <!--
                 # Amazon S3 configuration.

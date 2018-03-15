@@ -26,6 +26,24 @@ public class UserProfilePicture implements java.io.Serializable {
 
     public UserProfilePicture() {
     }
+    
+    public UserProfilePicture(String userId, byte[] picture, int width, int height) {
+        this.userId = userId;
+        this.picture = picture;
+        this.width = width;
+        this.height = height;
+    }
+    
+    /**
+     * "Factory" method: 
+     * @param userProfileId
+     * @param picture
+     * @return
+     */
+    public static UserProfilePicture newOriginalPicture(String userProfileId, byte[] picture) {
+        // The original picture is indicated by width == height == 0;
+        return new UserProfilePicture(userProfileId, picture, 0, 0);
+    }
 
     @Id
     @GenericGenerator(name = "id", strategy = "com.ers.core.util.RandomUUIDGenerator")

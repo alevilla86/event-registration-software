@@ -4,7 +4,7 @@
 package com.ers.core.service;
 
 import com.ers.core.dao.UserDao;
-import com.ers.core.dao.common.UserConstants;
+import com.ers.core.dao.constants.UserConstants;
 import com.ers.core.dto.UserCreateDto;
 import com.ers.core.dto.UserDto;
 import com.ers.core.exception.ErsErrorCode;

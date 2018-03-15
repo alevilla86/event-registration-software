@@ -1,11 +1,11 @@
 /*
  * Copyright (C) 2018-2019 ERS - Alejandro Villalobos Hernandez (alevilla86@hotmail.com). All rights reserved.
  */
-package com.ers.core.security.config;
+package com.ers.core.config;
 
 import com.ers.core.security.TokenAuthenticationEntryPoint;
 import com.ers.core.security.RestAuthenticationFilter;
-import com.ers.core.util.ApplicationPropertiesConstants;
+import com.ers.core.dao.constants.ApplicationPropertiesConstants;
 import com.ers.core.util.ApplicationPropertiesUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

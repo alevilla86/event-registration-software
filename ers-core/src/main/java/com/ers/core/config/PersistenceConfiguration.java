@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2018-2019 ERS - Alejandro Villalobos Hernandez (alevilla86@hotmail.com). All rights reserved.
  */
-package com.ers.core;
+package com.ers.core.config;
 
 import javax.persistence.EntityManagerFactory;
 import org.hibernate.SessionFactory;
@@ -15,7 +15,7 @@ import org.springframework.orm.hibernate5.HibernateTransactionManager;
  * @author avillalobos
  */
 @Configuration
-public class HibernateConfiguration {
+public class PersistenceConfiguration {
     
     @Autowired
     private EntityManagerFactory entityManagerFactory;

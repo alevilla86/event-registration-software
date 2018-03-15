@@ -3,7 +3,7 @@
  */
 package com.ers.core.util;
 
-import com.ers.core.security.config.SecurityConstants;
+import com.ers.core.dao.constants.SecurityConstants;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
 
