@@ -7,7 +7,7 @@ import com.ers.core.exception.ErsErrorCode;
 import com.ers.core.exception.ErsException;
 import com.ers.core.orm.SecurityToken;
 import com.ers.core.orm.User;
-import com.ers.core.dao.constants.SecurityConstants;
+import com.ers.core.constants.SecurityConstants;
 import com.ers.core.service.SecurityService;
 import com.ers.core.service.UserService;
 import com.ers.core.util.WebUtils;

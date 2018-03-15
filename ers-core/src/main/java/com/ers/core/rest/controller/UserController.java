@@ -11,7 +11,7 @@ import com.ers.core.orm.SecurityToken;
 import com.ers.core.orm.User;
 import com.ers.core.service.SecurityService;
 import com.ers.core.service.UserService;
-import com.ers.core.dao.constants.ApplicationPropertiesConstants;
+import com.ers.core.constants.ApplicationPropertiesConstants;
 import com.ers.core.util.ApplicationPropertiesUtil;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;

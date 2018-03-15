@@ -152,5 +152,171 @@
                 </source>
             </subsection>
         </section>
+        
+        <section name="Upload user profile picture">
+            <p>
+                Uploads an user profile picture.<br/>
+                A previous picture, if exists, gets replaced.<br/>
+                Only <b>png</b> and <b>jpeg</b> formats are supported. 
+            </p>
+            <subsection name="Request">
+                <ul>
+                    <li>
+                        Method: POST<br/>
+                        Consumes: <b>multipart</b> file<br/>
+                    </li>
+                    <li>
+                        URI: /user-profiles/picture
+                    </li>
+                </ul>
+            </subsection>
+            <subsection name="Response">
+                <source>
+true
+                </source>
+            </subsection>
+        </section>
+
+
+        <section name="Delete user profile picture">
+            <p>
+                Deletes the user profile picture.
+            </p>
+            <subsection name="Request">
+                <ul>
+                    <li>
+                        Method: DELETE
+                    </li>
+                    <li>
+                        URI: /user-profiles/picture
+                    </li>
+                </ul>
+            </subsection>
+            <subsection name="Response">
+                <source>
+true
+                </source>
+            </subsection>
+        </section>
+
+
+        <section name="Download user profile picture">
+            <p>
+                Returns the user profile picture.
+            </p>
+            <subsection name="Request">
+                <ul>
+                    <li>
+                        Method: GET
+                    </li>
+                    <li>
+                        URI: /user-profiles/{userId}/picture[?width=width&amp;height=height]
+                    </li>
+                    <li>
+                        Query Parameters: they are optional.<br/>
+                        If either width or height is not present or 0, then the original picture is returned.<br/>
+                        The allowed maximum value of either one is 1024 at this time.<br/>
+                        If either width or height is a negative number then the other value is substituted to maintain the aspect ratio of the original image dimensions.<br/>
+                        For example, if the request is GET /user-profiles/picture?width=500&amp;height=-1, then the picture width will be 500 pixels and the height will be adjusted proportionally. 
+                        <ul>
+                            <li>
+                                width - the pixel width of the picture
+                            </li>
+                            <li>
+                                height - the pixel height of the picture
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        Notes<br/>
+                        If the associated profile has no picture, an empty response is returned.
+                    </li>
+                    
+                </ul>
+            </subsection>
+            <subsection name="Response">
+                <source>
+The picture file                
+                </source>
+            </subsection>
+        </section>
+
+
+        <section name="Download user profile picture base64 encoded">
+            <p>
+                Returns the user profile picture base64 encoded.<br/>
+            </p>
+            <subsection name="Request">
+                <ul>
+                    <li>
+                        Method: GET
+                    </li>
+                    <li>
+                        URI: /user-profiles/{userId}/picture/base64[?width=width&amp;height=height]
+                    </li>
+                    <li>
+                        Query Parameters: they are optional.<br/>
+                        If either width or height is not present or 0, then the original picture is returned.<br/>
+                        The allowed maximum value of either one is 1024 at this time.<br/>
+                        If either width or height is a negative number then the other value is substituted to maintain the aspect ratio of the original image dimensions.<br/>
+                        For example, if the request is GET /user-profiles/picture?width=500&amp;height=-1, then the picture width will be 500 pixels and the height will be adjusted proportionally. 
+                        <ul>
+                            <li>
+                                width - the pixel width of the picture
+                            </li>
+                            <li>
+                                height - the pixel height of the picture
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        Notes<br/>
+                        If the associated profile has no picture, an empty response is returned.
+                    </li>
+                    
+                </ul>
+            </subsection>
+            <subsection name="Response">
+                <source>
+The picture file, base64 encoded
+                </source>
+            </subsection>
+        </section>
+
+
+
+       <section name="Verify if a user has a profile picture">
+            <p>
+                Verifies whether a user has a profile picture.
+            </p>
+            <subsection name="Request">
+                <ul>
+                    <li>
+                        Method: GET
+                    </li>
+                    <li>
+                        URI: /user-profiles/{userId}/has_picture
+                    </li>
+                    <li>
+                        Path Parameters:
+                        <ul>
+                            <li>
+                            userId - The ID of the user
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </subsection>
+            <subsection name="Response if the user has a profile picture">
+                <source>
+true               
+                </source>
+            </subsection>
+            <subsection name="Response if the user doesn't have a profile picture">
+                <source>
+false               
+                </source>
+            </subsection>
+        </section>
     </body>
 </document>

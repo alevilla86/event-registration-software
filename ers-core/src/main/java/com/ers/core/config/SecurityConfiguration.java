@@ -5,7 +5,7 @@ package com.ers.core.config;
 
 import com.ers.core.security.TokenAuthenticationEntryPoint;
 import com.ers.core.security.RestAuthenticationFilter;
-import com.ers.core.dao.constants.ApplicationPropertiesConstants;
+import com.ers.core.constants.ApplicationPropertiesConstants;
 import com.ers.core.util.ApplicationPropertiesUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

@@ -4,7 +4,7 @@
 package com.ers.core.orm;
 // Generated Mar 9, 2018 2:36:46 PM by Hibernate Tools 4.3.1
 
-import com.ers.core.dao.constants.UserConstants;
+import com.ers.core.constants.UserConstants;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Objects;

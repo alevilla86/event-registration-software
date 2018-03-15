@@ -5,7 +5,7 @@ package com.ers.core.security;
 
 import com.ers.core.exception.ErsErrorCode;
 import com.ers.core.exception.ErsException;
-import com.ers.core.dao.constants.ApplicationPropertiesConstants;
+import com.ers.core.constants.ApplicationPropertiesConstants;
 import com.ers.core.util.ApplicationPropertiesUtil;
 import java.util.regex.Pattern;
 import org.apache.commons.lang3.StringUtils;
