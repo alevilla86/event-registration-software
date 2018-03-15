@@ -52,7 +52,7 @@ public class UserController {
     }
     
     @PostMapping("/users/login")
-    public void loginUser(HttpServletRequest httpRequest, 
+    public boolean loginUser(HttpServletRequest httpRequest, 
             HttpServletResponse httpResponse,
             @RequestBody LoginRequestDto loginRequestDto) throws ErsException {
         
@@ -63,6 +63,8 @@ public class UserController {
         addTokenCookieToResponse(loggedUser.getTokenInUse(), httpResponse);
         
         LOGGER.info("{} has logged in", loginRequestDto.getEmail());
+        
+        return true;
     }
     
     /**

@@ -1,0 +1,22 @@
+<document xmlns="http://maven.apache.org/XDOC/2.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
+ 
+    <properties>
+        <title>REST services index</title>
+    </properties>
+
+    <body>
+        
+        <section name="List of access points">
+            <p>Here you can find a list of the web services in the system.</p>
+            <p>Main app</p>
+            <ol>
+                <!-- Please be nice and keep them in alphabetical order -->
+                <li>
+                    <a href="./user.html">User</a>
+                </li>
+            </ol>
+        </section>
+    </body>
+</document>

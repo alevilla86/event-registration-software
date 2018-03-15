@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document xmlns="http://maven.apache.org/XDOC/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
+
+    <properties>
+        <title>Users REST services</title>
+    </properties>
+    
+    <body>
+        
+        <section name="Index">
+            <macro name="toc">
+                <param name="section" value="0" />
+                <param name="fromDepth" value="0" />
+                <param name="toDepth" value="1" />
+            </macro>
+        </section>
+        
+        <section name="General">
+            <p>
+                Three types of users are supported:
+                <ul>
+                    <li>ADMIN</li>
+                    <li>ORGANIZER</li>
+                    <li>USER</li>
+                </ul>
+
+                Depending on the user type different actions can be accomplished.
+            </p>
+            <p>
+                Any given user can have one of these statuses:
+                <ul>
+                    <li>ENABLED: active user</li>
+                    <li>DISABLED: account is temporarely banned to use</li>
+                    <li>LOCKED: too many failed login attempts</li>
+                </ul>
+            </p>
+            <p>
+                The user password must be at least 1 digit, 1 uppercase letter, 1 lowercase letter, 1 special character and 8 character length.
+            </p>
+        </section>
+        
+        <section name="Create user account">
+            <p>
+                Creates an user account.<br/>
+                This is a non-authenticated request: anyone can make this call.<br/>
+            </p>
+            <subsection name="Request">
+                <p>
+                    All fields are mandatory.<br/>
+                </p>
+                <ul>
+                    <li>
+                        <b>Method:</b> POST
+                    </li>
+                    <li>
+                        <b>URI:</b> /users/create
+                    </li>
+                    <li>
+                        <b>Query Parameters:</b> none
+                    </li>
+                </ul>
+                <source>
+{
+    "email" : "test1@gmail.com",
+    "firstName" : "Rider",
+    "lastName" : "One",
+    "type" : "USER",
+    "password" : "1234"
+}
+                </source>
+            </subsection>
+
+            <subsection name="Response">
+                <source>
+{
+    "id": "edbc2769-aa80-400c-a119-1bb12c812e33",
+    "email": "test3@gmail.com",
+    "firstName": "Rider",
+    "lastName": "Two",
+    "type": "USER",
+    "status": "ENABLED"
+}                
+                </source>
+            </subsection>
+        </section>
+        
+        <section name="Login">
+            <p>
+                Authenticates an user 
+            </p>
+            <p>
+                As result of a successful authentication, a cookie is set that contains a token.<br/>
+                The token cookie is required when making any "secured" calls.<br/>
+            </p>
+            <p>
+                On the client side, attention must be given to the error codes as: <br/> 
+                USER_STATUS_DISABLED = 1013; The account has been disabled by an Admin. The user can't use the application anymore.<br/>
+                USER_STATUS_LOCKED = 1014; The account has been locked because of too many failed authentication attempts. The user can start the procedure of unlocking it by making the "Get unlock email" call. (PENDING)<br/>
+                Alternatively, it the user has forgotten the current password, then the procedure of reseting it can be initiated by making the "Get reset password email (forgot password)" call. (PENDING)<br/> 
+            </p>
+            <p>
+                <br/>
+                Once enabled on the server side, a reCAPTCHA value is required in request.<br/>
+                The server is using reCAPTCHA V2. See https://developers.google.com/recaptcha/docs/ (PENDING)<br/>
+                <br/>
+                The client side integration boils down to these:<br/>
+                1. Paste this snippet before the closing head tag on your HTML template:<br/>
+                <![CDATA[<script src='https://www.google.com/recaptcha/api.js'></script>]]><br/>
+                2. Paste this snippet at the end of the form where you want the reCAPTCHA widget to appear:<br/>
+                <![CDATA[<div class="g-recaptcha" data-sitekey="6LdDoCIUAAAAAAFm9dLj8yGbSgfXV0t1s4eq5I2_"></div>]]><br/>
+                3. The g-recaptcha-response has to be included in the request body, along with the user email and password.<br/>
+                <br/>
+                For testing, only requests sent to any of the subdomains of acme.com work for now.<br/>
+                If the client developers use a different domain for testing locally, that can be done with a configuration change.<br/>                  
+            </p>
+            <subsection name="Request">
+                <ul>
+                    <li>
+                        <b>Method:</b> POST
+                    </li>
+                    <li>
+                        <b>URI:</b> /users/login
+                    </li>
+                    <li>
+                        <b>Query Parameters:</b> none
+                    </li>
+                </ul>
+                <source>
+{
+    "email" : "test3@gmail.com",
+    "password" : "1234"
+}
+                </source>
+            </subsection>
+
+            <subsection name="Successful response">
+                <source>
+true
+                </source>
+            </subsection>
+
+            <subsection name="Failed response">
+                <source>
+{
+  "message": "Invalid credentials",
+  "errorCode": 1012
+}                </source>
+            </subsection>
+        </section>
+        
+        <section name="Logout">
+            <p>
+                Logs out a user<br/>
+            </p>
+            <subsection name="Request">
+                <ul>
+                    <li>
+                        <b>Method:</b> POST
+                    </li>
+                    <li>
+                        <b>URI:</b> /users/logout
+                    </li>
+                    <li>
+                        <b>Query Parameters:</b> none
+                    </li>
+                </ul>
+            </subsection>
+            <subsection name="Response">
+                <source>
+"true"
+                </source>
+            </subsection>
+        </section>
+    
+    </body>
+</document>

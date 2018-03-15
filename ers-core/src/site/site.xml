@@ -1,0 +1,7 @@
+<project>
+    <body>
+    <menu name="Overview">
+      <item name="RESTful Web Services" href="rest-index.html"/>
+    </menu>
+    </body>
+</project>

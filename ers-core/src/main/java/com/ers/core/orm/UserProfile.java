@@ -82,7 +82,7 @@ public class UserProfile implements java.io.Serializable {
     private Hand hand;
     private String team;
     private Date dateBirth;
-    private int age;
+    private Integer age;
     private String phone;
     private Genre genre;
     private String weight;
@@ -190,11 +190,11 @@ public class UserProfile implements java.io.Serializable {
     }
 
     @Column(name = "age")
-    public int getAge() {
+    public Integer getAge() {
         return this.age;
     }
 
-    public void setAge(int age) {
+    public void setAge(Integer age) {
         this.age = age;
     }
 

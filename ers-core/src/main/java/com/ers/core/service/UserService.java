@@ -71,7 +71,7 @@ public class UserService {
      * @return
      * @throws ErsException 
      */
-    @Transactional(readOnly = true)
+    //@Transactional(readOnly = true)
     public User getUserByEmail(String email) throws ErsException {
         
         if (StringUtils.isBlank(email)) {
