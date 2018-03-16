@@ -215,6 +215,11 @@ public class User implements java.io.Serializable {
     public boolean isAdmin() {
         return this.type == Type.ADMIN;
     }
+    
+    @Transient 
+    public boolean isAdminOrOrganizer() {
+        return this.type == Type.ADMIN || this.type == Type.ORANIZER;
+    }
 
     @Override
     public int hashCode() {

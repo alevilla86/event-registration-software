@@ -14,7 +14,7 @@ import com.ers.core.orm.Role;
 import com.ers.core.orm.User;
 import com.ers.core.orm.UserProfile;
 import com.ers.core.orm.UserProfilePicture;
-import com.ers.core.util.ErsFileUtils;
+import com.ers.core.util.EntityValidatorUtil;
 import com.ers.core.util.ImageUtils;
 import com.mchange.io.FileUtils;
 import java.io.File;
@@ -46,10 +46,10 @@ public class UserProfileService {
     private CategoryService categoryService;
     
     @Autowired
-    private ErsFileUtils ersFileUtils;
+    private UserProfilePictureDao userProfilePictureDao;
     
     @Autowired
-    private UserProfilePictureDao userProfilePictureDao;
+    private EntityValidatorUtil validator;
     
     /**
      * Saves an user profile. Restricted access to package classes only.
@@ -176,77 +176,13 @@ public class UserProfileService {
             existingProfile.setCategory(null);
         }
         
-        validateUserProfileFields(existingProfile, loggedUser.getType());
+        validator.validateUserProfileFields(existingProfile, loggedUser.getType());
         
         userProfileDao.update(existingProfile);
         
         LOGGER.info("User profile updated [userProfileId={}, profile={}]", userProfileId, existingProfile);
         
         return convertToUserProfileDto(existingProfile);
-    }
-    
-    /**
-     * Validates the user profile required fields.
-     * Fields not required in the database, but required per business logic.
-     * 
-     * @param userProfile 
-     */
-    private void validateUserProfileFields(UserProfile userProfile, User.Type type) throws ErsException {
-        
-        if (userProfile == null) {
-            throw new ErsException("UserProfile is null", ErsErrorCode.USER_INFORMATION_MISSING);
-        }
-        
-        if (StringUtils.isBlank(userProfile.getGovernmentId())) {
-            throw new ErsException("User government id is missing", ErsErrorCode.USER_INFORMATION_MISSING);
-        }
-        
-        if (userProfile.getHand() == null) {
-            throw new ErsException("User government hand is missing", ErsErrorCode.USER_INFORMATION_MISSING);
-        }
-        
-        if (userProfile.getDateBirth() == null) {
-            throw new ErsException("User date birth is missing", ErsErrorCode.USER_INFORMATION_MISSING);
-        }
-        
-        if (userProfile.getAge() < 0) {
-            throw new ErsException("User age is missing", ErsErrorCode.USER_INFORMATION_MISSING);
-        }
-        
-        if (StringUtils.isBlank(userProfile.getPhone())) {
-            throw new ErsException("User phone is missing", ErsErrorCode.USER_INFORMATION_MISSING);
-        }
-        
-        if (userProfile.getGenre() == null) {
-            throw new ErsException("User government idgenre is missing", ErsErrorCode.USER_INFORMATION_MISSING);
-        }
-        
-        if (StringUtils.isBlank(userProfile.getCountry())) {
-            throw new ErsException("User country is missing", ErsErrorCode.USER_INFORMATION_MISSING);
-        }
-        
-        if (StringUtils.isBlank(userProfile.getEmergencyContactName())) {
-            throw new ErsException("User emergency contact is missing", ErsErrorCode.USER_INFORMATION_MISSING);
-        }
-        
-        if (StringUtils.isBlank(userProfile.getEmergencyContactPhone())) {
-            throw new ErsException("User emergency contact phone is missing", ErsErrorCode.USER_INFORMATION_MISSING);
-        }
-        
-        if (userProfile.getShirtSize() == null) {
-            throw new ErsException("User shirt size is missing", ErsErrorCode.USER_INFORMATION_MISSING);
-        }
-        
-        /*
-        Only USER type users requires to have a role and a category
-        */
-        if (type != User.Type.ADMIN && userProfile.getRole() == null) {
-            throw new ErsException("User role is missing", ErsErrorCode.USER_INFORMATION_MISSING);
-        }
-        
-        if (type == User.Type.USER && userProfile.getCategory() == null) {
-            throw new ErsException("User category is missing", ErsErrorCode.USER_INFORMATION_MISSING);
-        }
     }
     
     /**
@@ -303,10 +239,10 @@ public class UserProfileService {
             throw new ErsException("User profile not found", ErsErrorCode.USER_PROFILE_NOT_FOUND);
         }
 
-        validatePicture(pictureFileName, dataFile);
+        validator.validatePicture(pictureFileName, dataFile);
 
         // Delete all the other old pictures
-        userProfilePictureDao.deleteUserProfilePictures(userId);
+        userProfilePictureDao.deletePictures(userId);
 
         byte[] picture;
         try {
@@ -323,28 +259,6 @@ public class UserProfileService {
         // Save the new picture: this is the original picture because is saved with width == height == 0
         UserProfilePicture userProfilePicture = UserProfilePicture.newOriginalPicture(userId, pngPicture);
         userProfilePictureDao.save(userProfilePicture);
-    }
-    
-    /**
-     * Validates an user profile picture.
-     * 
-     * @param pictureFileName
-     * @param dataFile
-     * @throws ErsException 
-     */
-    private void validatePicture(String pictureFileName, File dataFile) throws ErsException {
-
-        // A weak check: just look at the file extension.
-        if (!ersFileUtils.hasValidPictureFileExtension(pictureFileName)) {
-            LOGGER.warn("{} doesn't have an allowed extension for pictures", pictureFileName);
-            throw new ErsException("Invalid extension for a picture file", ErsErrorCode.INVALID_PICTURE_EXTENSION);
-        }
-
-        // A stronger check
-        if (!ImageUtils.isImage(dataFile)) {
-            LOGGER.warn("{} is not a valid picture file", pictureFileName);
-            throw new ErsException("Invalid picture format", ErsErrorCode.INVALID_PICTURE_FORMAT);
-        }
     }
     
     /**
@@ -367,7 +281,7 @@ public class UserProfileService {
             throw new ErsAccessDeniedException("You are not authorized to delete this profile picture");
         }
 
-        userProfilePictureDao.deleteUserProfilePictures(userId);
+        userProfilePictureDao.deletePictures(userId);
     }
     
     @Transactional(readOnly = true)

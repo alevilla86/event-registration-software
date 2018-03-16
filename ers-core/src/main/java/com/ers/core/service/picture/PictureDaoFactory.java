@@ -3,6 +3,9 @@
  */
 package com.ers.core.service.picture;
 
+import com.ers.core.dao.EventPictureDao;
+import com.ers.core.dao.PictureDao;
+import com.ers.core.dao.UserProfilePictureDao;
 import com.ers.core.service.picture.GetPictureService.PictureServiceType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -13,13 +16,13 @@ import org.springframework.stereotype.Component;
  * @author avillalobos
  */
 @Component
-class InternalGetPictureServiceFactory {
+class PictureDaoFactory {
     
     @Autowired
-    private InternalGetUserProfilePictureService userProfilePictureService;
+    private EventPictureDao eventPictureDao;
     
     @Autowired
-    private InternalGetEventPictureService eventPictureService;
+    private UserProfilePictureDao userProfilePictureDao;
     
     /**
      * Factory method to return the correct instance.
@@ -27,15 +30,15 @@ class InternalGetPictureServiceFactory {
      * @param type
      * @return 
      */
-    InternalGetPictureService getPictureService(PictureServiceType type) {
+    PictureDao getPictureService(PictureServiceType type) {
         
         switch (type) {
             
             case USER_PROFILE:
-                return userProfilePictureService;
+                return userProfilePictureDao;
                 
             case EVENT:
-                return eventPictureService;
+                return eventPictureDao;
         }
         
         return null;

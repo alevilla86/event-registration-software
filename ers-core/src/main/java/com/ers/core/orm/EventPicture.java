@@ -27,6 +27,24 @@ public class EventPicture implements java.io.Serializable, Picture {
 
     public EventPicture() {
     }
+    
+    public EventPicture(String eventId, byte[] picture, int width, int height) {
+        this.eventId = eventId;
+        this.picture = picture;
+        this.width = width;
+        this.height = height;
+    }
+    
+    /**
+     * "Factory" method: 
+     * @param eventId
+     * @param picture
+     * @return
+     */
+    public static EventPicture newOriginalPicture(String eventId, byte[] picture) {
+        // The original picture is indicated by width == height == 0;
+        return new EventPicture(eventId, picture, 0, 0);
+    }
 
     @Id
     @GenericGenerator(name = "id", strategy = "com.ers.core.util.RandomUUIDGenerator")

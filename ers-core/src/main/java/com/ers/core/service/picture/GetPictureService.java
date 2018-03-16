@@ -3,6 +3,7 @@
  */
 package com.ers.core.service.picture;
 
+import com.ers.core.dao.PictureDao;
 import com.ers.core.exception.ErsException;
 import com.ers.core.orm.User;
 import org.slf4j.Logger;
@@ -31,7 +32,10 @@ public class GetPictureService {
     private static final Logger LOGGER = LoggerFactory.getLogger(GetPictureService.class);
     
     @Autowired
-    private InternalGetPictureServiceFactory factory;
+    private PictureDaoFactory factory;
+    
+    @Autowired
+    private InternalGetPictureService internalGetPictureService;
     
     /**
      * 
@@ -46,7 +50,9 @@ public class GetPictureService {
     @Transactional(rollbackFor = Exception.class)
     public byte[] getPicture(User loggedUser, String entityId, int width, int height, PictureServiceType pictureServiceType) throws ErsException {
         
-        InternalGetPictureService internalGetPictureService = factory.getPictureService(pictureServiceType);
+        //Decide what DAO to use.
+        PictureDao dao = factory.getPictureService(pictureServiceType);
+        internalGetPictureService.setPictureDao(dao);
         
         byte[] result; 
         

@@ -1,11 +1,8 @@
-/*
- * Copyright (C) 2018-2019 ERS - Alejandro Villalobos Hernandez (alevilla86@hotmail.com). All rights reserved.
- */
 package com.ers.core.dao;
 
 import com.ers.core.exception.DatabaseException;
+import com.ers.core.orm.EventPicture;
 import com.ers.core.orm.Picture;
-import com.ers.core.orm.UserProfilePicture;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -19,40 +16,40 @@ import org.springframework.stereotype.Repository;
  * @author avillalobos
  */
 @Repository
-public class UserProfilePictureDao extends BaseDao implements PictureDao {
+public class EventPictureDao extends BaseDao implements PictureDao {
     
     /**
      * Gets the original picture from the database.
      * 
-     * @param userId
+     * @param eventId
      * @return
      * @throws DatabaseException 
      */
     @Override
-    public UserProfilePicture getOriginalPicture(String userId) throws DatabaseException {
-        // The original picture of a user profile is identified by width == height == 0.
-        return get(userId, 0, 0);
+    public EventPicture getOriginalPicture(String eventId) throws DatabaseException {
+        // The original picture of an event is identified by width == height == 0.
+        return get(eventId, 0, 0);
     }
 
     /**
      * Gets a resized picture.
      * 
-     * @param userId
+     * @param eventId
      * @param width
      * @param height
      * @return
      * @throws DatabaseException 
      */
     @Override
-    public UserProfilePicture get(String userId, int width, int height) throws DatabaseException {
+    public EventPicture get(String eventId, int width, int height) throws DatabaseException {
         try {
             
-            Criteria criteria = getSession().createCriteria(UserProfilePicture.class) //
-                    .add(Restrictions.eq("userId", userId)) //
+            Criteria criteria = getSession().createCriteria(EventPicture.class) //
+                    .add(Restrictions.eq("eventId", eventId)) //
                     .add(Restrictions.eq("width", width)) //
                     .add(Restrictions.eq("height", height));
 
-            UserProfilePicture result = (UserProfilePicture) criteria.uniqueResult();
+            EventPicture result = (EventPicture) criteria.uniqueResult();
 
             return result;
         } catch (HibernateException e) {
@@ -61,18 +58,18 @@ public class UserProfilePictureDao extends BaseDao implements PictureDao {
     }
 
     /**
-     * Deletes all user profile pictures.
+     * Deletes all user event pictures.
      * 
-     * @param userId
+     * @param eventId
      * @return
      * @throws DatabaseException 
      */
     @Override
-    public boolean deletePictures(String userId) throws DatabaseException {
-        String hql = "DELETE " + UserProfilePicture.class.getName() + " WHERE userId = :userId";
+    public boolean deletePictures(String eventId) throws DatabaseException {
+        String hql = "DELETE " + EventPicture.class.getName() + " WHERE eventId = :eventId";
 
         try {
-            Query query = getSession().createQuery(hql).setParameter("userId", userId);
+            Query query = getSession().createQuery(hql).setParameter("eventId", eventId);
             int count = query.executeUpdate();
 
             return count != 0;
@@ -83,18 +80,18 @@ public class UserProfilePictureDao extends BaseDao implements PictureDao {
     }
 
     /**
-     * Saves an user profile picture to the database.
+     * Saves an event picture to the database.
      * 
-     * @param userProfilePicture
+     * @param eventPicture
      * @return
      * @throws DatabaseException 
      */
-    public UserProfilePicture save(UserProfilePicture userProfilePicture) throws DatabaseException {
+    public EventPicture save(EventPicture eventPicture) throws DatabaseException {
         
         try {
             
             Session session = getSession();
-            UserProfilePicture result = (UserProfilePicture) session.merge(userProfilePicture);
+            EventPicture result = (EventPicture) session.merge(eventPicture);
 
             return result;
 
@@ -102,22 +99,22 @@ public class UserProfilePictureDao extends BaseDao implements PictureDao {
             throw new DatabaseException(e);
         }
     }
-    
+
     /**
-     * Returns true if the user has the original uploaded picture.
+     * Returns true if the event has the original uploaded picture.
      * 
-     * @param userId
+     * @param eventId
      * @return
      * @throws DatabaseException 
      */
     @Override
-    public boolean hasOriginalPicture(String userId) throws DatabaseException {
+    public boolean hasOriginalPicture(String eventId) throws DatabaseException {
 
         // The original picture of a user profile is identified by width == height == 0.
         try {
             
-            Criteria criteria = getSession().createCriteria(UserProfilePicture.class, "picture") //
-                    .add(Restrictions.eq("picture.userId", userId)) //
+            Criteria criteria = getSession().createCriteria(EventPicture.class, "picture") //
+                    .add(Restrictions.eq("picture.eventId", eventId)) //
                     .add(Restrictions.eq("picture.width", 0)) //
                     .add(Restrictions.eq("picture.height", 0)) // 
                     .setProjection(Projections.rowCount());
@@ -132,10 +129,9 @@ public class UserProfilePictureDao extends BaseDao implements PictureDao {
     }
 
     @Override
-    public Picture save(String entityId, byte[] resizedImage, int newWidth, int newHeight) throws DatabaseException {
-        UserProfilePicture userProfilePicture = new UserProfilePicture(entityId, resizedImage, newWidth, newHeight);
-        return save(userProfilePicture);
+    public Picture save(String eventId, byte[] resizedImage, int newWidth, int newHeight) throws DatabaseException {
+        EventPicture picture = new EventPicture(eventId, resizedImage, newWidth, newHeight);
+        return save(picture);
     }
-
 
 }

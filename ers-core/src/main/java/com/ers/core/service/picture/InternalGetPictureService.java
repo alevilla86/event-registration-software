@@ -3,6 +3,7 @@
  */
 package com.ers.core.service.picture;
 
+import com.ers.core.dao.PictureDao;
 import com.ers.core.exception.ErsException;
 import com.ers.core.orm.Picture;
 import com.ers.core.orm.User;
@@ -19,9 +20,12 @@ import org.springframework.stereotype.Component;
  * @author avillalobos
  */
 @Component
-abstract class InternalGetPictureService {
+class InternalGetPictureService {
     
     private static final Logger LOGGER = LoggerFactory.getLogger(InternalGetPictureService.class);
+    
+    //Must be injected via setter.
+    private PictureDao pictureDao;
     
     /**
      * Makes some validations and at runtime one of its implementations knows how
@@ -34,7 +38,12 @@ abstract class InternalGetPictureService {
      * @return
      * @throws ErsException 
      */
-    byte[] retrievePicture(User loggedUser, String entityId, int width, int height) throws ErsException {
+    protected byte[] retrievePicture(User loggedUser, String entityId, int width, int height) throws ErsException {
+        
+        if (pictureDao == null) {
+            LOGGER.error("PictureDao has not been initialized. Make sure to call its setter.");
+            throw new ErsException("PictureDao has not been initialized");
+        }
         
         //Validate the dimensions are within the configured limits.
         ImageUtils.validateDimentions(width, height);
@@ -73,12 +82,33 @@ abstract class InternalGetPictureService {
         return resizedImage;
     }
     
-    protected abstract boolean hasOriginalPicture(String entityId) throws ErsException;
+    private boolean hasOriginalPicture(String entityId) throws ErsException {
+        
+        return pictureDao.hasOriginalPicture(entityId);
+    }
     
-    protected abstract Picture getPicture(String entityId, int desiredWidth, int desiredHeight) throws ErsException;
+    private Picture getPicture(String entityId, int desiredWidth, int desiredHeight) throws ErsException {
+        
+        return pictureDao.get(entityId, desiredWidth, desiredHeight);
+    }
     
-    protected abstract Picture getOriginalPicture(String entityId) throws ErsException;
+    private Picture getOriginalPicture(String entityId) throws ErsException {
+        
+        return pictureDao.getOriginalPicture(entityId);
+    }
+
+    private void saveResizedImage(String entityId, byte[] resizedImage, int newWidth, int newHeight) throws ErsException {
+        
+        pictureDao.save(entityId, resizedImage, newWidth, newHeight);
+    }
     
-    protected abstract void saveResizedImage(String entityId, byte[] resizedImage, int newWidth, int newHeight) throws ErsException;
+    /**
+     * Sets the corresponding PictureDao.
+     * 
+     * @param pictureDao 
+     */
+    public void setPictureDao(PictureDao pictureDao) {
+        this.pictureDao = pictureDao;
+    }
 
 }

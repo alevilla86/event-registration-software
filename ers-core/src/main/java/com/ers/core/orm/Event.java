@@ -4,6 +4,7 @@
 package com.ers.core.orm;
 // Generated Mar 9, 2018 2:36:46 PM by Hibernate Tools 4.3.1
 
+import com.ers.core.constants.EventConstants;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -66,7 +67,7 @@ public class Event implements java.io.Serializable {
         this.id = id;
     }
 
-    @Column(name = "name", nullable = false, length = 128)
+    @Column(name = "name", nullable = false, length = EventConstants.MAX_EVENT_NAME_LENGTH)
     public String getName() {
         return this.name;
     }
@@ -75,7 +76,7 @@ public class Event implements java.io.Serializable {
         this.name = name;
     }
 
-    @Column(name = "description", length = 65535)
+    @Column(name = "description", length = EventConstants.MAX_EVENT_DESCRIPTION_LENGTH)
     public String getDescription() {
         return this.description;
     }
@@ -93,7 +94,7 @@ public class Event implements java.io.Serializable {
         this.createdByUserId = createdByUserId;
     }
 
-    @Column(name = "created_by_user_email", nullable = false, length = 128)
+    @Column(name = "created_by_user_email", nullable = false, length = EventConstants.MAX_EVENT_CREATED_BY_USER_EMAIL_LENGTH)
     public String getCreatedByUserEmail() {
         return this.createdByUserEmail;
     }
@@ -152,7 +153,7 @@ public class Event implements java.io.Serializable {
         this.dateLimitRegister = dateLimitRegister;
     }
 
-    @Column(name = "country", nullable = false, length = 128)
+    @Column(name = "country", nullable = false, length = EventConstants.MAX_EVENT_COUNTRY_LENGTH)
     public String getCountry() {
         return this.country;
     }
@@ -161,7 +162,7 @@ public class Event implements java.io.Serializable {
         this.country = country;
     }
 
-    @Column(name = "state", nullable = false, length = 128)
+    @Column(name = "state", nullable = false, length = EventConstants.MAX_EVENT_STATE_LENGTH)
     public String getState() {
         return this.state;
     }
@@ -170,7 +171,7 @@ public class Event implements java.io.Serializable {
         this.state = state;
     }
 
-    @Column(name = "city", nullable = false, length = 128)
+    @Column(name = "city", nullable = false, length = EventConstants.MAX_EVENT_CITY_LENGTH)
     public String getCity() {
         return this.city;
     }
@@ -179,7 +180,7 @@ public class Event implements java.io.Serializable {
         this.city = city;
     }
 
-    @Column(name = "street1", length = 512)
+    @Column(name = "street1", length = EventConstants.MAX_EVENT_STREET_LENGTH)
     public String getStreet1() {
         return this.street1;
     }
@@ -188,7 +189,7 @@ public class Event implements java.io.Serializable {
         this.street1 = street1;
     }
 
-    @Column(name = "street2", length = 512)
+    @Column(name = "street2", length = EventConstants.MAX_EVENT_STREET_LENGTH)
     public String getStreet2() {
         return this.street2;
     }
@@ -197,7 +198,7 @@ public class Event implements java.io.Serializable {
         this.street2 = street2;
     }
 
-    @Column(name = "website", length = 128)
+    @Column(name = "website", length = EventConstants.MAX_EVENT_WEBSITE_LENGTH)
     public String getWebsite() {
         return this.website;
     }
@@ -206,7 +207,7 @@ public class Event implements java.io.Serializable {
         this.website = website;
     }
 
-    @Column(name = "social_network_fb", length = 128)
+    @Column(name = "social_network_fb", length = EventConstants.MAX_EVENT_SOCIAL_NETWORK_LENGTH)
     public String getSocialNetworkFb() {
         return this.socialNetworkFb;
     }
@@ -215,7 +216,7 @@ public class Event implements java.io.Serializable {
         this.socialNetworkFb = socialNetworkFb;
     }
 
-    @Column(name = "social_network_ig", length = 128)
+    @Column(name = "social_network_ig", length = EventConstants.MAX_EVENT_SOCIAL_NETWORK_LENGTH)
     public String getSocialNetworkIg() {
         return this.socialNetworkIg;
     }
@@ -224,7 +225,7 @@ public class Event implements java.io.Serializable {
         this.socialNetworkIg = socialNetworkIg;
     }
 
-    @Column(name = "social_network_tw", length = 128)
+    @Column(name = "social_network_tw", length = EventConstants.MAX_EVENT_SOCIAL_NETWORK_LENGTH)
     public String getSocialNetworkTw() {
         return this.socialNetworkTw;
     }
@@ -233,7 +234,7 @@ public class Event implements java.io.Serializable {
         this.socialNetworkTw = socialNetworkTw;
     }
 
-    @Column(name = "email", length = 128)
+    @Column(name = "email", length = EventConstants.MAX_EVENT_EMAIL_LENGTH)
     public String getEmail() {
         return this.email;
     }
