@@ -17,7 +17,10 @@ import com.ers.core.util.ImageUtils;
 import com.mchange.io.FileUtils;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -140,7 +143,7 @@ public class EventService {
     public EventDto updateEvent(User loggedUser, String eventId, EventDto updatedEvent) throws ErsException {
         
         if (StringUtils.isBlank(eventId)) {
-            throw new ErsException("Event missing to update", ErsErrorCode.PARAMETER_MISSING);
+            throw new ErsException("Event id missing to update", ErsErrorCode.PARAMETER_MISSING);
         }
         
         Event existingEvent = eventDao.getById(eventId);
@@ -209,7 +212,7 @@ public class EventService {
             return;
         }
         
-        if (!StringUtils.equals(loggedUser.getId(), eventId) && !loggedUser.isAdmin()) {
+        if (!StringUtils.equals(loggedUser.getId(), existingEvent.getCreatedByUserId()) && !loggedUser.isAdmin()) {
             LOGGER.warn("Trying to delete an event with a non-authorized user [user={}, eventId={}, eventName={}]", loggedUser.getEmail(), existingEvent.getId(), existingEvent.getName());
             throw new ErsAccessDeniedException("Only the creator or an ADMIN can delete events");
         }
@@ -270,7 +273,7 @@ public class EventService {
             throw new ErsException("Event not found", ErsErrorCode.NOT_FOUND_EVENT);
         }
         
-        if (!StringUtils.equals(loggedUser.getId(), eventId) && !loggedUser.isAdmin()) {
+        if (!StringUtils.equals(loggedUser.getId(), existingEvent.getCreatedByUserId()) && !loggedUser.isAdmin()) {
             LOGGER.warn("Trying to upload an event picture with a non-authorized user [user={}, eventId={}, eventName={}]", loggedUser.getEmail(), existingEvent.getId(), existingEvent.getName());
             throw new ErsAccessDeniedException("Only the creator or an ADMIN can upload event pictures");
         }
@@ -314,7 +317,7 @@ public class EventService {
             return;
         }
 
-        if (!StringUtils.equals(existingEvent.getCreatedByUserId(), loggedUser.getId())) {
+        if (!StringUtils.equals(existingEvent.getCreatedByUserId(), loggedUser.getId()) && !loggedUser.isAdmin()) {
             throw new ErsAccessDeniedException("You are not authorized to delete this event picture");
         }
 
@@ -324,6 +327,35 @@ public class EventService {
     @Transactional(readOnly = true)
     public boolean hasUserProfilePicture(String eventId) throws ErsException {
         boolean result = eventPictureDao.hasOriginalPicture(eventId);
+        return result;
+    }
+
+    /**
+     * Gets the events created by the logged user.
+     * 
+     * @param loggedUser
+     * @return
+     * @throws ErsException 
+     */
+    @Transactional(readOnly = true)
+    public List<EventDto> getMyCreatedEvents(User loggedUser) throws ErsException {
+        
+        List<Event> myEvents = eventDao.getMyCreatedEvents(loggedUser.getId());
+        
+        if (myEvents == null || myEvents.isEmpty()) {
+            LOGGER.info("User {} has no created events", loggedUser.getEmail());
+            return Collections.EMPTY_LIST;
+        }
+        
+        List<EventDto> result = new ArrayList<>(myEvents.size());
+        
+        for (Event event : myEvents) {
+            EventDto dto = converToEventDto(event);
+            result.add(dto);
+        }
+        
+        LOGGER.info("User {} has {} events created by him", loggedUser.getEmail(), result.size());
+        
         return result;
     }
 

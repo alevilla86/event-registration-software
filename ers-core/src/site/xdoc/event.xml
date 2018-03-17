@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document xmlns="http://maven.apache.org/XDOC/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
+
+    <properties>
+        <title>Event REST services</title>
+    </properties>
+    
+    <body>
+        
+        <section name="Index">
+            <macro name="toc">
+                <param name="section" value="0" />
+                <param name="fromDepth" value="0" />
+                <param name="toDepth" value="1" />
+            </macro>
+        </section>
+        
+        <section name="General">
+            <p>
+                Event required fields:
+                <ul>
+                    <li>name</li>
+                    <li>dateStart</li>
+                    <li>dateEnd</li>
+                    <li>dateLimitRegister</li>
+                    <li>country</li>
+                    <li>state</li>
+                    <li>city</li>
+                    <li>email</li>
+                </ul>
+            </p>
+        </section>
+        
+        <section name="Create event">
+            <p>
+                Creates an event. <br/>
+                Only ADMIN and ORGANIZER users can create events.
+            </p>
+            <subsection name="Request">
+                <ul>
+                    <li>
+                        <b>Method:</b> POST
+                    </li>
+                    <li>
+                        <b>URI:</b> /events
+                    </li>
+                    <li>
+                        <b>Query Parameters:</b> none
+                    </li>
+                </ul>
+                <source>
+{
+    "name" : "Vuelta Maáster Evolution",
+    "description" : "Edición 2018 de la Vuelta Máster a Costa Rica",
+    "dateStart" : "2018-07-20T09:00:00",
+    "dateEnd" : "2018-07-22T17:00:00",
+    "dateLimitRegister" : "2018-07-10T23:59:59",
+    "country" : "Costa Rica",
+    "state" : "Guanacaste",
+    "city" : "Playas del Coco",
+    "socialNetworkFb" : "http://www.facebook.com/VueltaMasterCostaRica/",
+    "email" : "info@evolutionmarketing.com"
+}
+                </source>
+            </subsection>
+
+            <subsection name="Response">
+                <source>
+{
+    "id": "8bbbe323-1fd3-4db9-a053-fe3fe500c420",
+    "name": "Vuelta Maáster Evolution",
+    "description": "Edición 2018 de la Vuelta Máster a Costa Rica",
+    "createdByUserEmail": null,
+    "dateStart": "2018-07-20T09:00:00.000+0000",
+    "dateEnd": "2018-07-22T17:00:00.000+0000",
+    "dateLimitRegister": "2018-07-10T23:59:59.000+0000",
+    "country": "Costa Rica",
+    "state": "Guanacaste",
+    "city": "Playas del Coco",
+    "street1": null,
+    "street2": null,
+    "website": null,
+    "socialNetworkFb": "http://www.facebook.com/VueltaMasterCostaRica/",
+    "socialNetworkIg": null,
+    "socialNetworkTw": null,
+    "email": "info@evolutionmarketing.com"
+}           
+                </source>
+            </subsection>
+        </section>
+        
+        <section name="Get event">
+            <p>
+                Gets an event by id.
+            </p>
+            <subsection name="Request">
+                <ul>
+                    <li>
+                        <b>Method:</b> GET
+                    </li>
+                    <li>
+                        <b>URI:</b> /events/{eventId}
+                    </li>
+                    <li>
+                        <b>Query Parameters:</b> none
+                    </li>
+                </ul>
+            </subsection>
+
+            <subsection name="Response">
+                <source>
+{
+    "id": "8bbbe323-1fd3-4db9-a053-fe3fe500c420",
+    "name": "Vuelta Maáster Evolution",
+    "description": "Edición 2018 de la Vuelta Máster a Costa Rica",
+    "createdByUserEmail": null,
+    "dateStart": "2018-07-20T09:00:00.000+0000",
+    "dateEnd": "2018-07-22T17:00:00.000+0000",
+    "dateLimitRegister": "2018-07-10T23:59:59.000+0000",
+    "country": "Costa Rica",
+    "state": "Guanacaste",
+    "city": "Playas del Coco",
+    "street1": null,
+    "street2": null,
+    "website": null,
+    "socialNetworkFb": "http://www.facebook.com/VueltaMasterCostaRica/",
+    "socialNetworkIg": null,
+    "socialNetworkTw": null,
+    "email": "info@evolutionmarketing.com"
+} 
+                </source>
+            </subsection>
+        </section>
+        
+        <section name="Get My Created Events">
+            <p>
+                Gets the events the logged user has created.
+            </p>
+            <subsection name="Request">
+                <ul>
+                    <li>
+                        Method: GET<br/>
+                    </li>
+                    <li>
+                        URI: /events
+                    </li>
+                </ul>
+            </subsection>
+            <subsection name="Response">
+                <source>
+[
+    {
+        "id": "8bbbe323-1fd3-4db9-a053-fe3fe500c420",
+        "name": "Vuelta Maáster Evolution",
+        "description": "Edición 2018 de la Vuelta Máster a Costa Rica",
+        "createdByUserEmail": null,
+        "dateStart": "2018-07-20T09:00:00.000+0000",
+        "dateEnd": "2018-07-22T17:00:00.000+0000",
+        "dateLimitRegister": "2018-07-10T23:59:59.000+0000",
+        "country": "Costa Rica",
+        "state": "Guanacaste",
+        "city": "Playas del Coco",
+        "street1": null,
+        "street2": null,
+        "website": null,
+        "socialNetworkFb": "http://www.facebook.com/VueltaMasterCostaRica/",
+        "socialNetworkIg": null,
+        "socialNetworkTw": null,
+        "email": "info@evolutionmarketing.com"
+    }
+]
+                </source>
+            </subsection>
+        </section>
+
+
+        <section name="Delete event">
+            <p>
+                Deletes the event. <br/>
+                Only the user who created the event or an ADMIN can delete the event
+            </p>
+            <subsection name="Request">
+                <ul>
+                    <li>
+                        Method: DELETE
+                    </li>
+                    <li>
+                        URI: /events/{eventId}
+                    </li>
+                </ul>
+            </subsection>
+            <subsection name="Response">
+                <source>
+true
+                </source>
+            </subsection>
+        </section>
+
+
+        <section name="Update event">
+            <p>
+                Updates an event. <br/>
+                Only the creator or an ADMIN user can update the event
+            </p>
+            <subsection name="Request">
+                <ul>
+                    <li>
+                        Method: PUT
+                    </li>
+                    <li>
+                        URI: /events/{eventId}
+                    </li>
+                </ul>
+                <source>
+{
+    "name": "Vuelta Máster Evolution",
+    "description": "Edición 2018 de la Vuelta Máster a Costa Rica",
+    "createdByUserEmail": null,
+    "dateStart": "2018-07-20T09:00:00.000+0000",
+    "dateEnd": "2018-07-22T17:00:00.000+0000",
+    "dateLimitRegister": "2018-07-10T23:59:59.000+0000",
+    "country": "Costa Rica",
+    "state": "Guanacaste",
+    "city": "Playas del Coco",
+    "street1": null,
+    "street2": null,
+    "website": "www.evolutionmarketing.com",
+    "socialNetworkFb": "http://www.facebook.com/VueltaMasterCostaRica/",
+    "socialNetworkIg": null,
+    "socialNetworkTw": null,
+    "email": "info@evolutionmarketing.com"
+} 
+                </source>
+            </subsection>
+            <subsection name="Response">
+                <source>
+{
+    "id": "8bbbe323-1fd3-4db9-a053-fe3fe500c420",
+    "name": "Vuelta Máster Evolution",
+    "description": "Edición 2018 de la Vuelta Máster a Costa Rica",
+    "createdByUserEmail": null,
+    "dateStart": "2018-07-20T09:00:00.000+0000",
+    "dateEnd": "2018-07-22T17:00:00.000+0000",
+    "dateLimitRegister": "2018-07-10T23:59:59.000+0000",
+    "country": "Costa Rica",
+    "state": "Guanacaste",
+    "city": "Playas del Coco",
+    "street1": null,
+    "street2": null,
+    "website": "www.evolutionmarketing.com",
+    "socialNetworkFb": "http://www.facebook.com/VueltaMasterCostaRica/",
+    "socialNetworkIg": null,
+    "socialNetworkTw": null,
+    "email": "info@evolutionmarketing.com"
+}               
+                </source>
+            </subsection>
+        </section>
+
+    </body>
+</document>

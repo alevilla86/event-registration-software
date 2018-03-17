@@ -6,6 +6,7 @@ package com.ers.core.dao;
 import com.ers.core.exception.DatabaseException;
 import com.ers.core.exception.ErsException;
 import com.ers.core.orm.Event;
+import java.util.List;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -107,6 +108,38 @@ public class EventDao extends BaseDao {
             Session session = getSession();
             
             session.delete(event);
+            
+        } catch (HibernateException ex) {
+            throw new DatabaseException(ex);
+        }
+    }
+    
+    /**
+     * Gets the created events for an user.
+     * 
+     * @param userId
+     * @return
+     * @throws ErsException 
+     */
+    public List<Event> getMyCreatedEvents(String userId) throws ErsException {
+        
+        try {
+            
+            Session session = getSession();
+            
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            
+            CriteriaQuery<Event> query = builder.createQuery(Event.class);
+            
+            Root<Event> event = 
+                    query.from(Event.class);
+                    query.where(builder.equal(event.get("createdByUserId"), userId));
+                    query.orderBy(builder.asc(event.get("dateStart")));
+                    query.distinct(true);
+                    
+            List<Event> result = (List<Event>) session.createQuery(query).list();
+            
+            return result;
             
         } catch (HibernateException ex) {
             throw new DatabaseException(ex);

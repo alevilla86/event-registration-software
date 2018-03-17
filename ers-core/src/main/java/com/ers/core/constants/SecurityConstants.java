@@ -10,7 +10,7 @@ package com.ers.core.constants;
 public interface SecurityConstants {
     
     /** Logged user when token validator is disabled. */
-    public static final String DEFAULT_USER_ID = "3";
+    public static final String DEFAULT_USER_ID = "2";
     
     /** Parameter in the request to avoid to touch the token. */
     public static final String SKIP_TOKEN_TOUCH_QUERY_PARAM_NAME = "skip-token-touch";

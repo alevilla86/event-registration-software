@@ -37,7 +37,7 @@ public class User implements java.io.Serializable {
 
     public enum Type {
 
-        ADMIN, ORANIZER, USER;
+        ADMIN, ORGANIZER, USER;
 
         public static Type getByName(String name) {
             for (Type type : values()) {
@@ -208,7 +208,7 @@ public class User implements java.io.Serializable {
 
     @Transient
     public boolean isOrganizer() {
-        return this.type == Type.ORANIZER;
+        return this.type == Type.ORGANIZER;
     }
 
     @Transient
@@ -218,7 +218,7 @@ public class User implements java.io.Serializable {
     
     @Transient 
     public boolean isAdminOrOrganizer() {
-        return this.type == Type.ADMIN || this.type == Type.ORANIZER;
+        return this.type == Type.ADMIN || this.type == Type.ORGANIZER;
     }
 
     @Override
