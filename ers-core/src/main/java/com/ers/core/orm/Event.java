@@ -234,7 +234,7 @@ public class Event implements java.io.Serializable {
         this.socialNetworkTw = socialNetworkTw;
     }
 
-    @Column(name = "email", length = EventConstants.MAX_EVENT_EMAIL_LENGTH)
+    @Column(name = "email", nullable = false, length = EventConstants.MAX_EVENT_EMAIL_LENGTH)
     public String getEmail() {
         return this.email;
     }

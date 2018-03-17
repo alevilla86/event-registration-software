@@ -331,3 +331,8 @@ INSERT INTO `user_profile` (`user_id`) VALUES ('3');
 --changeset avillalobos:adding-missing-role-2018-MAR-15-08-42
 --comment runner role was missing
 INSERT INTO `role` (`id`, `name`) VALUES ('17', 'Corredor');
+
+--changeset avillalobos:event-email-fox-2018-MAR-17-15-35
+--comment event email was not required
+ALTER TABLE `event` 
+CHANGE COLUMN `email` `email` VARCHAR(128) NOT NULL ;
