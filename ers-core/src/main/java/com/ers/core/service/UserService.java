@@ -56,7 +56,7 @@ public class UserService {
         User user = userDao.getById(id);
         
         if (user == null) {
-            throw new ErsException("User not exists", ErsErrorCode.TARGET_NOT_EXISTS);
+            throw new ErsException("User not exists", ErsErrorCode.NOT_FOUND_USER);
         }
         
         return user;
@@ -79,7 +79,8 @@ public class UserService {
         User user = userDao.getByEmail(email);
         
         if (user == null) {
-            throw new ErsException("User not exists", ErsErrorCode.TARGET_NOT_EXISTS);
+            LOGGER.error("User with email {} not exists", email);
+            throw new ErsException("User not exists", ErsErrorCode.NOT_FOUND_USER);
         }
         
         return user;

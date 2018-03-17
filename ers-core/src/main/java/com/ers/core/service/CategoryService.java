@@ -42,7 +42,8 @@ public class CategoryService {
         Category category = categoryDao.getByName(name);
         
         if (category == null) {
-            throw new ErsException("The category not exists", ErsErrorCode.TARGET_NOT_EXISTS);
+            LOGGER.error("Category {} was not found", name);
+            throw new ErsException("The category not exists", ErsErrorCode.NOT_FOUND_CATEGORY);
         }
         
         LOGGER.debug("Found cateogry [role={}]", name);

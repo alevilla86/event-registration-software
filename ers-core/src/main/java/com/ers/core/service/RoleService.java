@@ -42,7 +42,8 @@ public class RoleService {
         Role role = roleDao.getByName(name);
         
         if (role == null) {
-            throw new ErsException("The role not exists", ErsErrorCode.TARGET_NOT_EXISTS);
+            LOGGER.error("Role {} was not found", name);
+            throw new ErsException("The role not exists", ErsErrorCode.NOT_FOUND_ROLE);
         }
         
         LOGGER.debug("Found role [role={}]", name);

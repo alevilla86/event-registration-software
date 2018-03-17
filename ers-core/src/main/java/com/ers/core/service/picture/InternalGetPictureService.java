@@ -4,6 +4,7 @@
 package com.ers.core.service.picture;
 
 import com.ers.core.dao.PictureDao;
+import com.ers.core.exception.ErsErrorCode;
 import com.ers.core.exception.ErsException;
 import com.ers.core.orm.Picture;
 import com.ers.core.orm.User;
@@ -42,7 +43,7 @@ class InternalGetPictureService {
         
         if (pictureDao == null) {
             LOGGER.error("PictureDao has not been initialized. Make sure to call its setter.");
-            throw new ErsException("PictureDao has not been initialized");
+            throw new ErsException("PictureDao has not been initialized", ErsErrorCode.PICTURE_DAO_NOT_INITIALIZED);
         }
         
         //Validate the dimensions are within the configured limits.

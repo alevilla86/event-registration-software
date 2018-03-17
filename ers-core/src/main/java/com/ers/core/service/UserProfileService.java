@@ -62,7 +62,7 @@ public class UserProfileService {
     UserProfile saveUserProfile(UserProfile userProfile) throws ErsException {
         
         if (userProfile == null || StringUtils.isBlank(userProfile.getUserId())) {
-            throw new ErsException("User information is missing to create user profile", ErsErrorCode.USER_INFORMATION_MISSING);
+            throw new ErsException("User information is missing to create user profile", ErsErrorCode.MISSING_INFORMATION_USER);
         }
         
         userProfileDao.save(userProfile);
@@ -86,7 +86,7 @@ public class UserProfileService {
         UserProfile existingProfile = userProfileDao.getById(loggedUser.getId());
         
         if (existingProfile == null) {
-            throw new ErsException("User profile not exists", ErsErrorCode.TARGET_NOT_EXISTS);
+            throw new ErsException("User profile not exists", ErsErrorCode.NOT_FOUND_USER_PROFILE);
         }
         
         return convertToUserProfileDto(existingProfile);
@@ -105,7 +105,7 @@ public class UserProfileService {
         UserProfile existingProfile = userProfileDao.getById(userProfileId);
         
         if (existingProfile == null) {
-            throw new ErsException("User profile not exists", ErsErrorCode.TARGET_NOT_EXISTS);
+            throw new ErsException("User profile not exists", ErsErrorCode.NOT_FOUND_USER_PROFILE);
         }
         
         return existingProfile;
@@ -132,7 +132,7 @@ public class UserProfileService {
         UserProfile existingProfile = userProfileDao.getById(userProfileId);
         
         if (existingProfile == null) {
-            throw new ErsException("User profile not exists", ErsErrorCode.TARGET_NOT_EXISTS);
+            throw new ErsException("User profile not exists", ErsErrorCode.NOT_FOUND_USER_PROFILE);
         }
         
         if (!StringUtils.equals(userProfileId, loggedUser.getId())) {
@@ -236,7 +236,7 @@ public class UserProfileService {
         UserProfile existingProfile = userProfileDao.getById(userId);
 
         if (existingProfile == null) {
-            throw new ErsException("User profile not found", ErsErrorCode.USER_PROFILE_NOT_FOUND);
+            throw new ErsException("User profile not found", ErsErrorCode.NOT_FOUND_USER_PROFILE);
         }
 
         validator.validatePicture(pictureFileName, dataFile);
@@ -274,7 +274,8 @@ public class UserProfileService {
         UserProfile existingProfile = userProfileDao.getById(userId);
 
         if (existingProfile == null) {
-            throw new ErsException("User profile not found", ErsErrorCode.USER_PROFILE_NOT_FOUND);
+            LOGGER.error("Trying to delete the picture of a non-existing user profile [userId={}]", userId);
+            return;
         }
 
         if (!StringUtils.equals(existingProfile.getUser().getId(), loggedUser.getId())) {

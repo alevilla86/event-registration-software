@@ -1,3 +1,6 @@
+/*
+ * Copyright (C) 2018-2019 ERS - Alejandro Villalobos Hernandez (alevilla86@hotmail.com). All rights reserved.
+ */
 package com.ers.core.util;
 
 import com.ers.core.constants.EventConstants;
@@ -41,11 +44,11 @@ public class EntityValidatorUtil {
     public void validateUser(User user) throws ErsException {
         
         if (user == null) {
-            throw new ErsException("User is null", ErsErrorCode.USER_INFORMATION_MISSING);
+            throw new ErsException("User is null", ErsErrorCode.MISSING_INFORMATION_USER);
         }
         
         if (StringUtils.isBlank(user.getEmail())) {
-            throw new ErsException("User email is blank", ErsErrorCode.USER_INFORMATION_MISSING);
+            throw new ErsException("User email is blank", ErsErrorCode.MISSING_INFORMATION_USER);
         }
         
         if (StringUtils.length(user.getEmail()) > UserConstants.MAX_USER_EMAIL_LENGTH) {
@@ -58,13 +61,13 @@ public class EntityValidatorUtil {
         }
         
         if (StringUtils.isBlank(user.getPassword())) {
-            throw new ErsException("User password is blank", ErsErrorCode.USER_INFORMATION_MISSING);
+            throw new ErsException("User password is blank", ErsErrorCode.MISSING_INFORMATION_USER);
         }
         
         passwordValidator.validate(user.getPassword(), user.getEmail());
         
         if (StringUtils.isBlank(user.getFirstName())) {
-            throw new ErsException("User first name is blank", ErsErrorCode.USER_INFORMATION_MISSING);
+            throw new ErsException("User first name is blank", ErsErrorCode.MISSING_INFORMATION_USER);
         }
         
         if (StringUtils.length(user.getFirstName()) > UserConstants.MAX_USER_NAME_LENGTH) {
@@ -72,7 +75,7 @@ public class EntityValidatorUtil {
         }
         
         if (StringUtils.isBlank(user.getLastName())) {
-            throw new ErsException("User last name is blank", ErsErrorCode.USER_INFORMATION_MISSING);
+            throw new ErsException("User last name is blank", ErsErrorCode.MISSING_INFORMATION_USER);
         }
         
         if (StringUtils.length(user.getLastName()) > UserConstants.MAX_USER_LAST_NAME_LENGTH) {
@@ -80,7 +83,7 @@ public class EntityValidatorUtil {
         }
         
         if (user.getType() == null) {
-            throw new ErsException("User password is blank", ErsErrorCode.USER_INFORMATION_MISSING);
+            throw new ErsException("User password is blank", ErsErrorCode.MISSING_INFORMATION_USER);
         }
         
         if (user.getStatus() == null) {
@@ -108,58 +111,58 @@ public class EntityValidatorUtil {
     public void validateUserProfileFields(UserProfile userProfile, User.Type type) throws ErsException {
         
         if (userProfile == null) {
-            throw new ErsException("UserProfile is null", ErsErrorCode.USER_INFORMATION_MISSING);
+            throw new ErsException("UserProfile is null", ErsErrorCode.MISSING_INFORMATION_USER_PROFILE);
         }
         
         if (StringUtils.isBlank(userProfile.getGovernmentId())) {
-            throw new ErsException("User government id is missing", ErsErrorCode.USER_INFORMATION_MISSING);
+            throw new ErsException("User government id is missing", ErsErrorCode.MISSING_INFORMATION_USER_PROFILE);
         }
         
         if (userProfile.getHand() == null) {
-            throw new ErsException("User government hand is missing", ErsErrorCode.USER_INFORMATION_MISSING);
+            throw new ErsException("User government hand is missing", ErsErrorCode.MISSING_INFORMATION_USER_PROFILE);
         }
         
         if (userProfile.getDateBirth() == null) {
-            throw new ErsException("User date birth is missing", ErsErrorCode.USER_INFORMATION_MISSING);
+            throw new ErsException("User date birth is missing", ErsErrorCode.MISSING_INFORMATION_USER_PROFILE);
         }
         
         if (userProfile.getAge() < 0) {
-            throw new ErsException("User age is missing", ErsErrorCode.USER_INFORMATION_MISSING);
+            throw new ErsException("User age is missing", ErsErrorCode.MISSING_INFORMATION_USER_PROFILE);
         }
         
         if (StringUtils.isBlank(userProfile.getPhone())) {
-            throw new ErsException("User phone is missing", ErsErrorCode.USER_INFORMATION_MISSING);
+            throw new ErsException("User phone is missing", ErsErrorCode.MISSING_INFORMATION_USER_PROFILE);
         }
         
         if (userProfile.getGenre() == null) {
-            throw new ErsException("User government idgenre is missing", ErsErrorCode.USER_INFORMATION_MISSING);
+            throw new ErsException("User government idgenre is missing", ErsErrorCode.MISSING_INFORMATION_USER_PROFILE);
         }
         
         if (StringUtils.isBlank(userProfile.getCountry())) {
-            throw new ErsException("User country is missing", ErsErrorCode.USER_INFORMATION_MISSING);
+            throw new ErsException("User country is missing", ErsErrorCode.MISSING_INFORMATION_USER_PROFILE);
         }
         
         if (StringUtils.isBlank(userProfile.getEmergencyContactName())) {
-            throw new ErsException("User emergency contact is missing", ErsErrorCode.USER_INFORMATION_MISSING);
+            throw new ErsException("User emergency contact is missing", ErsErrorCode.MISSING_INFORMATION_USER_PROFILE);
         }
         
         if (StringUtils.isBlank(userProfile.getEmergencyContactPhone())) {
-            throw new ErsException("User emergency contact phone is missing", ErsErrorCode.USER_INFORMATION_MISSING);
+            throw new ErsException("User emergency contact phone is missing", ErsErrorCode.MISSING_INFORMATION_USER_PROFILE);
         }
         
         if (userProfile.getShirtSize() == null) {
-            throw new ErsException("User shirt size is missing", ErsErrorCode.USER_INFORMATION_MISSING);
+            throw new ErsException("User shirt size is missing", ErsErrorCode.MISSING_INFORMATION_USER_PROFILE);
         }
         
         /*
         Only USER type users requires to have a role and a category
         */
         if (type != User.Type.ADMIN && userProfile.getRole() == null) {
-            throw new ErsException("User role is missing", ErsErrorCode.USER_INFORMATION_MISSING);
+            throw new ErsException("User role is missing", ErsErrorCode.MISSING_INFORMATION_USER_PROFILE);
         }
         
         if (type == User.Type.USER && userProfile.getCategory() == null) {
-            throw new ErsException("User category is missing", ErsErrorCode.USER_INFORMATION_MISSING);
+            throw new ErsException("User category is missing", ErsErrorCode.MISSING_INFORMATION_USER_PROFILE);
         }
     }
     
@@ -172,11 +175,11 @@ public class EntityValidatorUtil {
     public void validateEvent(Event event) throws ErsException {
         
         if (event == null) {
-            throw new ErsException("Event is null", ErsErrorCode.EVENT_INFORMATION_MISSING);
+            throw new ErsException("Event is null", ErsErrorCode.MISSING_INFORMATION_EVENT);
         }
         
         if (StringUtils.isBlank(event.getName())) {
-            throw new ErsException("Event name is empty", ErsErrorCode.EVENT_INFORMATION_MISSING);
+            throw new ErsException("Event name is empty", ErsErrorCode.MISSING_INFORMATION_EVENT);
         }
         
         if (StringUtils.length(event.getDescription()) > EventConstants.MAX_EVENT_DESCRIPTION_LENGTH) {
@@ -184,11 +187,11 @@ public class EntityValidatorUtil {
         }
         
         if (StringUtils.isBlank(event.getCreatedByUserId())) {
-            throw new ErsException("Event created by user id is empty", ErsErrorCode.EVENT_INFORMATION_MISSING);
+            throw new ErsException("Event created by user id is empty", ErsErrorCode.MISSING_INFORMATION_EVENT);
         }
         
         if (StringUtils.isBlank(event.getCreatedByUserEmail())) {
-            throw new ErsException("Event created by user email is empty", ErsErrorCode.EVENT_INFORMATION_MISSING);
+            throw new ErsException("Event created by user email is empty", ErsErrorCode.MISSING_INFORMATION_EVENT);
         }
         
         if (StringUtils.length(event.getCreatedByUserEmail()) > EventConstants.MAX_EVENT_CREATED_BY_USER_EMAIL_LENGTH) {
@@ -196,19 +199,19 @@ public class EntityValidatorUtil {
         }
         
         if (event.getDateCreated() == null) {
-            throw new ErsException("Event created date is null", ErsErrorCode.EVENT_INFORMATION_MISSING);
+            throw new ErsException("Event created date is null", ErsErrorCode.MISSING_INFORMATION_EVENT);
         }
         
         if (event.getDateModified() == null) {
-            throw new ErsException("Event modified date is null", ErsErrorCode.EVENT_INFORMATION_MISSING);
+            throw new ErsException("Event modified date is null", ErsErrorCode.MISSING_INFORMATION_EVENT);
         }
         
         if (event.getDateStart() == null) {
-            throw new ErsException("Event start date is null", ErsErrorCode.EVENT_INFORMATION_MISSING);
+            throw new ErsException("Event start date is null", ErsErrorCode.MISSING_INFORMATION_EVENT);
         }
         
         if (event.getDateEnd() == null) {
-            throw new ErsException("Event end date is null", ErsErrorCode.EVENT_INFORMATION_MISSING);
+            throw new ErsException("Event end date is null", ErsErrorCode.MISSING_INFORMATION_EVENT);
         }
         
         if (event.getDateStart().after(event.getDateEnd())) {
@@ -216,7 +219,7 @@ public class EntityValidatorUtil {
         }
         
         if (event.getDateLimitRegister() == null) {
-            throw new ErsException("Event limit register date is null", ErsErrorCode.EVENT_INFORMATION_MISSING);
+            throw new ErsException("Event limit register date is null", ErsErrorCode.MISSING_INFORMATION_EVENT);
         }
         
         if (event.getDateLimitRegister().after(event.getDateEnd())) {
@@ -224,7 +227,7 @@ public class EntityValidatorUtil {
         }
         
         if (StringUtils.isBlank(event.getCountry())) {
-            throw new ErsException("Event country is empty", ErsErrorCode.EVENT_INFORMATION_MISSING);
+            throw new ErsException("Event country is empty", ErsErrorCode.MISSING_INFORMATION_EVENT);
         }
         
         if (StringUtils.length(event.getCountry()) > EventConstants.MAX_EVENT_COUNTRY_LENGTH) {
@@ -232,7 +235,7 @@ public class EntityValidatorUtil {
         }
         
         if (StringUtils.isBlank(event.getState())) {
-            throw new ErsException("Event state is empty", ErsErrorCode.EVENT_INFORMATION_MISSING);
+            throw new ErsException("Event state is empty", ErsErrorCode.MISSING_INFORMATION_EVENT);
         }
         
         if (StringUtils.length(event.getState()) > EventConstants.MAX_EVENT_STATE_LENGTH) {
@@ -240,7 +243,7 @@ public class EntityValidatorUtil {
         }
         
         if (StringUtils.isBlank(event.getCity())) {
-            throw new ErsException("Event city is empty", ErsErrorCode.EVENT_INFORMATION_MISSING);
+            throw new ErsException("Event city is empty", ErsErrorCode.MISSING_INFORMATION_EVENT);
         }
         
         if (StringUtils.length(event.getCity()) > EventConstants.MAX_EVENT_CITY_LENGTH) {
@@ -272,7 +275,7 @@ public class EntityValidatorUtil {
         }
         
         if (StringUtils.isBlank(event.getEmail())) {
-            throw new ErsException("Event email is empty", ErsErrorCode.EVENT_INFORMATION_MISSING);
+            throw new ErsException("Event email is empty", ErsErrorCode.MISSING_INFORMATION_EVENT);
         }
         
         if (StringUtils.length(event.getEmail()) > EventConstants.MAX_EVENT_EMAIL_LENGTH) {

@@ -1,3 +1,6 @@
+/*
+ * Copyright (C) 2018-2019 ERS - Alejandro Villalobos Hernandez (alevilla86@hotmail.com). All rights reserved.
+ */
 package com.ers.core.service;
 
 import com.ers.core.dao.EventDao;
@@ -59,7 +62,7 @@ public class EventService {
         Event event = eventDao.getById(eventId);
         
         if (event == null) {
-            throw new ErsException("Event not exists", ErsErrorCode.TARGET_NOT_EXISTS);
+            throw new ErsException("Event not exists", ErsErrorCode.NOT_FOUND_EVENT);
         }
         
         EventDto result = converToEventDto(event);
@@ -143,7 +146,7 @@ public class EventService {
         Event existingEvent = eventDao.getById(eventId);
         
         if (existingEvent == null) {
-            throw new ErsException("Trying to update a non-existing event", ErsErrorCode.TARGET_NOT_EXISTS);
+            throw new ErsException("Trying to update a non-existing event", ErsErrorCode.NOT_FOUND_EVENT);
         }
         
         //Only ADMINS and the creator can update an event.
@@ -264,7 +267,7 @@ public class EventService {
         Event existingEvent = eventDao.getById(eventId);
 
         if (existingEvent == null) {
-            throw new ErsException("Event not found", ErsErrorCode.TARGET_NOT_EXISTS);
+            throw new ErsException("Event not found", ErsErrorCode.NOT_FOUND_EVENT);
         }
         
         if (!StringUtils.equals(loggedUser.getId(), eventId) && !loggedUser.isAdmin()) {
@@ -282,7 +285,7 @@ public class EventService {
             picture = FileUtils.getBytes(dataFile);
         } catch (IOException ex) {
 
-            throw new ErsException("Failed to process the picture", ErsErrorCode.GENERAL, ex);
+            throw new ErsException("Failed to process the picture", ErsErrorCode.IO_EXCEPTION, ex);
         }
 
         // Convert to PNG keeping the original size.
@@ -307,7 +310,8 @@ public class EventService {
         Event existingEvent = eventDao.getById(eventId);
 
         if (existingEvent == null) {
-            throw new ErsException("Event not found", ErsErrorCode.TARGET_NOT_EXISTS);
+            LOGGER.error("Trying to delete the picture of a non-existing event [eventId={}]", eventId);
+            return;
         }
 
         if (!StringUtils.equals(existingEvent.getCreatedByUserId(), loggedUser.getId())) {

@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2018-2019 ERS - Alejandro Villalobos Hernandez (alevilla86@hotmail.com). All rights reserved.
  */
-package com.ers.core.rest;
+package com.ers.core.config;
 
 import com.ers.core.exception.ErsAccessDeniedException;
 import com.ers.core.exception.ErsErrorCode;
@@ -16,7 +16,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 /**
- *
+ * Knows how to process and log every type of Exception.
+ * 
  * @author avillalobos
  */
 @ControllerAdvice
