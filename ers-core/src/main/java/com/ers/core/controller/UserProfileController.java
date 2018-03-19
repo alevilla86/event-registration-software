@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2018-2019 ERS - Alejandro Villalobos Hernandez (alevilla86@hotmail.com). All rights reserved.
  */
-package com.ers.core.rest.controller;
+package com.ers.core.controller;
 
 import com.ers.core.constants.FileConstants;
 import com.ers.core.dto.UserProfileDto;
