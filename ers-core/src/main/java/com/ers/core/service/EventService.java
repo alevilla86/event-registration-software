@@ -218,7 +218,7 @@ public class EventService {
         }
         
         //If the event has USERS joined to it, it can be deleted.
-        if (!existingEvent.getUsers().isEmpty()) {
+        if (!existingEvent.getUserJoinEvents().isEmpty()) {
             throw new ErsException("Event has people registered", ErsErrorCode.EVENT_HAS_USERS_REGISTERED);
         }
         

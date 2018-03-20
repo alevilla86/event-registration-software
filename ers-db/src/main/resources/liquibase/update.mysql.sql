@@ -336,3 +336,16 @@ INSERT INTO `role` (`id`, `name`) VALUES ('17', 'Corredor');
 --comment event email was not required
 ALTER TABLE `event` 
 CHANGE COLUMN `email` `email` VARCHAR(128) NOT NULL ;
+
+--changeset avillalobos:user_join_event-more-fields-2018-MAR-20-09-52
+--comment user_join_event needed more fields
+ALTER TABLE `user_join_event` 
+ADD COLUMN `date_registered` DATETIME NOT NULL AFTER `event_id`,
+ADD COLUMN `amount_paid` DOUBLE NOT NULL AFTER `date_registered`,
+ADD COLUMN `registered_by_user_id` CHAR(36) NOT NULL AFTER `amount_paid`,
+ADD COLUMN `registered_by_user_email` VARCHAR(128) NOT NULL AFTER `registered_by_user_id`;
+
+--changeset avillalobos:user_join_event-currency-2018-MAR-20-10-00
+--comment user_join_event needed currency field
+ALTER TABLE `user_join_event` 
+ADD COLUMN `currency` ENUM('CRC', 'USD') NOT NULL AFTER `amount_paid`;

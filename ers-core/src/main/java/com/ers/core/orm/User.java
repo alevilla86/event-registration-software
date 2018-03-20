@@ -16,9 +16,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -66,7 +64,7 @@ public class User implements java.io.Serializable {
     private Date dateCreated;
     private Date dateModified;
     private UserProfile userProfile;
-    private Set<Event> events = new HashSet<>(0);
+    private Set<UserJoinEvent> userJoinEvents = new HashSet<>(0);
 
     //Transient.
     private SecurityToken tokenInUse;
@@ -180,16 +178,13 @@ public class User implements java.io.Serializable {
         this.userProfile = userProfile;
     }
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "user_join_event", joinColumns = {
-        @JoinColumn(name = "user_id", nullable = false, updatable = false)}, inverseJoinColumns = {
-        @JoinColumn(name = "event_id", nullable = false, updatable = false)})
-    public Set<Event> getEvents() {
-        return this.events;
+    @OneToMany(fetch=FetchType.LAZY, mappedBy="user")
+    public Set<UserJoinEvent> getUserJoinEvents() {
+        return this.userJoinEvents;
     }
-
-    public void setEvents(Set<Event> events) {
-        this.events = events;
+    
+    public void setUserJoinEvents(Set<UserJoinEvent> userJoinEvents) {
+        this.userJoinEvents = userJoinEvents;
     }
 
     @Transient

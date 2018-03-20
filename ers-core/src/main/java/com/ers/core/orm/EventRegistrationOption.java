@@ -24,10 +24,6 @@ import org.hibernate.annotations.GenericGenerator;
 @Table(name = "event_registration_option")
 public class EventRegistrationOption implements java.io.Serializable {
     
-    public enum Currency {
-        CRC, USD
-    }
-
     private String id;
     private Event event;
     private String name;

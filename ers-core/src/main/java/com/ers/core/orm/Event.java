@@ -13,9 +13,6 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -49,7 +46,7 @@ public class Event implements java.io.Serializable {
     private String socialNetworkIg;
     private String socialNetworkTw;
     private String email;
-    private List<User> users = new ArrayList<>(0);
+    private List<UserJoinEvent> userJoinEvents = new ArrayList<>(0);
     private List<EventRegistrationOption> eventRegistrationOptions = new ArrayList<>(0);
 
     public Event() {
@@ -243,16 +240,13 @@ public class Event implements java.io.Serializable {
         this.email = email;
     }
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "user_join_event", catalog = "ers", joinColumns = {
-        @JoinColumn(name = "event_id", nullable = false, updatable = false)}, inverseJoinColumns = {
-        @JoinColumn(name = "user_id", nullable = false, updatable = false)})
-    public List<User> getUsers() {
-        return this.users;
+    @OneToMany(fetch=FetchType.LAZY, mappedBy="event")
+    public List<UserJoinEvent> getUserJoinEvents() {
+        return this.userJoinEvents;
     }
-
-    public void setUsers(List<User> users) {
-        this.users = users;
+    
+    public void setUserJoinEvents(List<UserJoinEvent> userJoinEvents) {
+        this.userJoinEvents = userJoinEvents;
     }
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "event")
