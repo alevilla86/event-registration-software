@@ -49,6 +49,7 @@ public enum ErsErrorCode {
     MISSING_INFORMATION_USER_PROFILE(1402),
     NOT_FOUND_USER_PROFILE(1403),
     NOT_FOUND_USER(1404),
+    USER_PROFILE_NOT_COMPLETED(1405),
     
     /*
     Picture error codes. 1500

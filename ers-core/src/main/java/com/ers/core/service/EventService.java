@@ -593,6 +593,11 @@ public class EventService {
         //Get the user.
         User user = userService.getUserById(userId);
         
+        //Only users with the profile completed can be registered.
+        if (!validator.isUserProfileComplete(user.getUserProfile(), User.Type.USER)) {
+            throw new ErsException("In order to complete the registration process we need the user profile information to be complete", ErsErrorCode.USER_PROFILE_NOT_COMPLETED);
+        }
+        
         //Get the registration option.
         EventRegistrationOption option = optionService.getEventRegistrationOptionById(registrationOptionId);
         
