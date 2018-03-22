@@ -74,8 +74,8 @@ public class UserProfile implements java.io.Serializable {
     }
 
     private String userId;
-    private Category category;
     private User user;
+    private Category category;
     private Role role;
     private String governmentId;
     private String externalId;
@@ -319,7 +319,7 @@ public class UserProfile implements java.io.Serializable {
     public void setDisciplines(List<Discipline> disciplines) {
         this.disciplines = disciplines;
     }
-
+    
     @Override
     public String toString() {
         return "UserProfile{" + "userId=" + userId + ", governmentId=" + governmentId + 

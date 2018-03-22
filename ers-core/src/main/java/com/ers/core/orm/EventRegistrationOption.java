@@ -4,6 +4,7 @@
 package com.ers.core.orm;
 // Generated Mar 9, 2018 2:36:46 PM by Hibernate Tools 4.3.1
 
+import com.ers.core.constants.EventConstants;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -56,7 +57,7 @@ public class EventRegistrationOption implements java.io.Serializable {
         this.event = event;
     }
 
-    @Column(name = "name", nullable = false, length = 128)
+    @Column(name = "name", nullable = false, length = EventConstants.MAX_EVENT_REGISTRATION_OPTION_NAME_LENGTH)
     public String getName() {
         return this.name;
     }
@@ -65,7 +66,7 @@ public class EventRegistrationOption implements java.io.Serializable {
         this.name = name;
     }
 
-    @Column(name = "description", nullable = false, length = 65535)
+    @Column(name = "description", nullable = false, length = EventConstants.MAX_EVENT_REGISTRATION_OPTION_DESCRIPTION_LENGTH)
     public String getDescription() {
         return this.description;
     }

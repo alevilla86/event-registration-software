@@ -8,7 +8,9 @@ import com.ers.core.constants.UserConstants;
 import com.ers.core.exception.ErsErrorCode;
 import com.ers.core.exception.ErsException;
 import com.ers.core.orm.Event;
+import com.ers.core.orm.EventRegistrationOption;
 import com.ers.core.orm.User;
+import com.ers.core.orm.UserJoinEvent;
 import com.ers.core.orm.UserProfile;
 import com.ers.core.security.PasswordValidator;
 import java.io.File;
@@ -167,6 +169,27 @@ public class EntityValidatorUtil {
     }
     
     /**
+     * Verifies if an user profile has all the required fields completed.
+     * Checks against the required fields of the user profile (defined in the 
+     * validateUserProfileFields method, and returns false if one of the required
+     * fields is missing.
+     * 
+     * @param userProfile 
+     * @param type 
+     * @return  
+     */
+    public boolean isUserProfileComplete(UserProfile userProfile, User.Type type) {
+        
+        try {
+            validateUserProfileFields(userProfile, type);
+        } catch (ErsException ex) {
+            return false;
+        }
+        
+        return true;
+    }
+    
+    /**
      * Validates an Event required field, formats and length of attributes.
      * 
      * @param event
@@ -287,6 +310,92 @@ public class EntityValidatorUtil {
             throw new ErsException("Event email is invalid", ErsErrorCode.INVALID_EMAIL);
         }
         
+    }
+    
+    /**
+     * Validates fields for users to register to an event.
+     * 
+     * @param userJoinEvent
+     * @throws ErsException 
+     */
+    public void validateUserJoinEvent(UserJoinEvent userJoinEvent) throws ErsException {
+        
+        if (userJoinEvent == null) {
+            throw new ErsException("UserJoinEvent is null", ErsErrorCode.MISSING_INFORMATION_USER_EVENT_REGISTRATION);
+        }
+        
+        if (userJoinEvent.getId() == null) {
+            throw new ErsException("UserJoinEvent id is null", ErsErrorCode.MISSING_INFORMATION_USER_EVENT_REGISTRATION);
+        }
+        
+        if (userJoinEvent.getAmountPaid() < 0) {
+            throw new ErsException("Invalid amount paid", ErsErrorCode.MISSING_INFORMATION_USER_EVENT_REGISTRATION);
+        }
+        
+        if (userJoinEvent.getCurrency() == null) {
+            throw new ErsException("Currency is null", ErsErrorCode.MISSING_INFORMATION_USER_EVENT_REGISTRATION);
+        }
+        
+        if (StringUtils.isBlank(userJoinEvent.getRegisteredByUserEmail())) {
+            throw new ErsException("Register by user email is empty", ErsErrorCode.MISSING_INFORMATION_USER_EVENT_REGISTRATION);
+        }
+        
+        if (StringUtils.isBlank(userJoinEvent.getRegisteredByUserId())) {
+            throw new ErsException("Register by user id is empty", ErsErrorCode.MISSING_INFORMATION_USER_EVENT_REGISTRATION);
+        }
+        
+        if (userJoinEvent.getDateRegistered() == null) {
+            throw new ErsException("Registration date is missing", ErsErrorCode.MISSING_INFORMATION_USER_EVENT_REGISTRATION);
+        }
+        
+        if (userJoinEvent.getEvent() == null) {
+            throw new ErsException("Event is null", ErsErrorCode.MISSING_INFORMATION_USER_EVENT_REGISTRATION);
+        }
+        
+        if (userJoinEvent.getUser() == null) {
+            throw new ErsException("User is null", ErsErrorCode.MISSING_INFORMATION_USER_EVENT_REGISTRATION);
+        }
+    }
+    
+    /**
+     * Validates the fields of an EventRegistrationOption.
+     * 
+     * @param option
+     * @throws ErsException 
+     */
+    public void validateEventRegistrationOption(EventRegistrationOption option) throws ErsException {
+        
+        if (option == null) {
+            throw new ErsException("Registration option is null", ErsErrorCode.MISSING_INFORMATION_EVENT_REGISTRATION_OPTION);
+        }
+        
+        if (option.getRegistrationCostCurrency() == null) {
+            throw new ErsException("Registration option currency is null", ErsErrorCode.MISSING_INFORMATION_EVENT_REGISTRATION_OPTION);
+        }
+        
+        if (option.getEvent() == null) {
+            throw new ErsException("Registration option event is null", ErsErrorCode.MISSING_INFORMATION_EVENT_REGISTRATION_OPTION);
+        }
+        
+        if (StringUtils.isBlank(option.getName())) {
+            throw new ErsException("Registration option name is blank", ErsErrorCode.MISSING_INFORMATION_EVENT_REGISTRATION_OPTION);
+        }
+        
+        if (StringUtils.length(option.getName()) > EventConstants.MAX_EVENT_REGISTRATION_OPTION_NAME_LENGTH) {
+            throw new ErsException("Registration option name is too long", ErsErrorCode.INVALID_ATTRIBUTE_LENGTH);
+        }
+        
+        if (StringUtils.isBlank(option.getDescription())) {
+            throw new ErsException("Registration option description is blank", ErsErrorCode.MISSING_INFORMATION_EVENT_REGISTRATION_OPTION);
+        }
+        
+        if (StringUtils.length(option.getDescription()) > EventConstants.MAX_EVENT_REGISTRATION_OPTION_DESCRIPTION_LENGTH) {
+            throw new ErsException("Registration option description is too long", ErsErrorCode.INVALID_ATTRIBUTE_LENGTH);
+        }
+        
+        if (option.getRegistrationCost() < 0) {
+            throw new ErsException("Registration option cost is missing", ErsErrorCode.MISSING_INFORMATION_EVENT_REGISTRATION_OPTION);
+        }
     }
     
     /**

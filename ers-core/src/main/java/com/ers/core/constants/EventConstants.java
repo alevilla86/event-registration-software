@@ -10,6 +10,9 @@ package com.ers.core.constants;
  */
 public interface EventConstants {
     
+    /*
+    EVENT.
+    */
     public static final int MAX_EVENT_NAME_LENGTH = 128;
     public static final int MAX_EVENT_DESCRIPTION_LENGTH = 65535;
     public static final int MAX_EVENT_CREATED_BY_USER_EMAIL_LENGTH = 128;
@@ -20,5 +23,11 @@ public interface EventConstants {
     public static final int MAX_EVENT_WEBSITE_LENGTH = 128;
     public static final int MAX_EVENT_SOCIAL_NETWORK_LENGTH = 128;
     public static final int MAX_EVENT_EMAIL_LENGTH = 128;
+    
+    /*
+    EVENT REGISTRATION OPTION.
+    */
+    public static final int MAX_EVENT_REGISTRATION_OPTION_NAME_LENGTH = 128;
+    public static final int MAX_EVENT_REGISTRATION_OPTION_DESCRIPTION_LENGTH = 65535;
 
 }

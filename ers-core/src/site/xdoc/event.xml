@@ -417,6 +417,170 @@ true | false
                 </source>
             </subsection>
         </section>
-
+        
+        <section name="Add event registration option">
+            <p>
+                Allows ORGANIZER and ADMIN users to add event registration options.
+            </p>
+            <subsection name="Request">
+                <ul>
+                    <li>
+                        Method: POST
+                    </li>
+                    <li>
+                        URI: /events/{eventId}/registration-options
+                    </li>
+                    <li>
+                        Path Parameters:
+                        <ul>
+                            <li>
+                            eventId - The ID of the event
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <source>
+{
+    "name" : "Fase I",
+    "description" : "Primera fase de inscripción, tiene un costo maás bajo que en los meses siguientes",
+    "registrationCost" : 90,
+    "registrationCostCurrency" : "USD"
+}     
+                </source>
+            </subsection>
+            <subsection name="Response">
+                <source>
+{
+    "id" : "2c7b73c3-3f40-4dff-b417-14a22243ae6a",
+    "name" : "Fase I",
+    "description" : "Primera fase de inscripción, tiene un costo maás bajo que en los meses siguientes",
+    "registrationCost" : 90,
+    "registrationCostCurrency" : "USD"
+} 
+                </source>
+            </subsection>
+        </section>
+        
+        <section name="Update event registration option">
+            <p>
+                Allows ORGANIZER and ADMIN users to update an event registration option.
+            </p>
+            <subsection name="Request">
+                <ul>
+                    <li>
+                        Method: POST
+                    </li>
+                    <li>
+                        URI: /events/{eventId}/registration-options/{optionId}
+                    </li>
+                    <li>
+                        Path Parameters:
+                        <ul>
+                            <li>
+                                eventId - The ID of the event
+                            </li>
+                            <li>
+                                optionId - the ID of the registration option
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <source>
+{
+    "name" : "Fase I",
+    "description" : "Primera fase de inscripción, tiene un costo maás bajo que en los meses siguientes",
+    "registrationCost" : 90,
+    "registrationCostCurrency" : "USD"
+}     
+                </source>
+            </subsection>
+            <subsection name="Response">
+                <source>
+{
+    "id" : "2c7b73c3-3f40-4dff-b417-14a22243ae6a",
+    "name" : "Fase I",
+    "description" : "Primera fase de inscripción, tiene un costo maás bajo que en los meses siguientes",
+    "registrationCost" : 90,
+    "registrationCostCurrency" : "USD"
+} 
+                </source>
+            </subsection>
+        </section>
+        
+        <section name="Get event registration options by event">
+            <p>
+                Gets all the registration options for one particular event order by option name.
+            </p>
+            <subsection name="Request">
+                <ul>
+                    <li>
+                        Method: GET
+                    </li>
+                    <li>
+                        URI: /events/{eventId}/registration-options/
+                    </li>
+                    <li>
+                        Path Parameters:
+                        <ul>
+                            <li>
+                                eventId - The ID of the event
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </subsection>
+            <subsection name="Response">
+                <source>
+[
+    {
+        "id": "194455fa-7f7b-4253-b1ca-d391f9d8d3ff",
+        "name": "Fase I",
+        "description": "Primera fase de inscripción, tiene un costo más bajo que en los meses siguientes",
+        "registrationCost": 90,
+        "registrationCostCurrency": "USD"
+    },
+    {
+        "id": "2c7b73c3-3f40-4dff-b417-14a22243ae6a",
+        "name": "Fase II",
+        "description": "Segunda fase de inscripción, tiene un costo más bajo que en los meses siguientes",
+        "registrationCost": 110,
+        "registrationCostCurrency": "USD"
+    }
+]
+                </source>
+            </subsection>
+        </section>
+        
+        <section name="Delete event registration option">
+            <p>
+                Allows ORGANIZER and ADMIN users to delete an event registration option.
+            </p>
+            <subsection name="Request">
+                <ul>
+                    <li>
+                        Method: DELETE
+                    </li>
+                    <li>
+                        URI: /events/{eventId}/registration-options/{optionId}
+                    </li>
+                    <li>
+                        Path Parameters:
+                        <ul>
+                            <li>
+                                eventId - The ID of the event
+                            </li>
+                            <li>
+                                optionId - the ID of the registration option
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </subsection>
+            <subsection name="Response">
+                <source>
+true | false
+                </source>
+            </subsection>
+        </section>
     </body>
 </document>

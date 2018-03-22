@@ -5,6 +5,7 @@ package com.ers.core.controller;
 
 import com.ers.core.constants.FileConstants;
 import com.ers.core.dto.EventDto;
+import com.ers.core.dto.EventRegistrationOptionDto;
 import com.ers.core.exception.ErsException;
 import com.ers.core.orm.User;
 import com.ers.core.service.EventService;
@@ -64,7 +65,7 @@ public class EventController {
     }
     
     @PutMapping("/events/{eventId}")
-    public EventDto updateEvent(@PathVariable("eventId") String eventId, @RequestBody EventDto eventDto) throws ErsException {
+    public EventDto updateEvent(@PathVariable String eventId, @RequestBody EventDto eventDto) throws ErsException {
         
         User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
@@ -77,7 +78,7 @@ public class EventController {
     }
     
     @GetMapping("/events/{eventId}")
-    public EventDto getEvent(@PathVariable("eventId") String eventId) throws ErsException {
+    public EventDto getEvent(@PathVariable String eventId) throws ErsException {
 
         User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
@@ -101,7 +102,7 @@ public class EventController {
     }
     
     @DeleteMapping("/events/{eventId}")
-    public boolean deleteEvent(@PathVariable("eventId") String eventId) throws ErsException {
+    public boolean deleteEvent(@PathVariable String eventId) throws ErsException {
 
         User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
@@ -113,9 +114,9 @@ public class EventController {
     }
     
     @PostMapping("/events/{eventId}/picture")
-    public boolean uploadUserProfilePicture(
+    public boolean uploadEventPicture(
             HttpServletRequest httpRequest,
-            @PathVariable("eventId") String eventId,
+            @PathVariable String eventId,
             @RequestParam("file") MultipartFile multipartFile
     ) throws ErsException, IOException {
 
@@ -140,7 +141,7 @@ public class EventController {
     }
     
     @DeleteMapping("/events/{eventId}/picture")
-    public boolean deleteUserProfilePicture(@PathVariable("eventId") String eventId) throws ErsException {
+    public boolean deleteEventPicture(@PathVariable String eventId) throws ErsException {
 
         User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
@@ -152,8 +153,8 @@ public class EventController {
     }
     
     @GetMapping("/events/{eventId}/picture")
-    public ResponseEntity<byte[]> downloadUserProfilePicture(
-            @PathVariable("eventId") String eventId,
+    public ResponseEntity<byte[]> downloadEventPicture(
+            @PathVariable String eventId,
             @RequestParam(value = "width", required = false, defaultValue = "0") int width,
             @RequestParam(value = "height", required = false, defaultValue = "0") int height
     ) throws ErsException {
@@ -172,9 +173,9 @@ public class EventController {
         return new ResponseEntity<>(picture, responseHeaders, HttpStatus.OK);
     }
     
-    @GetMapping(value = "/events/{eventId}/picture/base64")
-    public String downloadUserProfilePictureBase64(
-            @PathVariable("eventId") String eventId,
+    @GetMapping("/events/{eventId}/picture/base64")
+    public String downloadEventPictureBase64(
+            @PathVariable String eventId,
             @RequestParam(value = "width", required = false, defaultValue = "0") int width,
             @RequestParam(value = "height", required = false, defaultValue = "0") int height
     ) throws ErsException {
@@ -192,8 +193,8 @@ public class EventController {
         return Base64.getEncoder().encodeToString(picture);
     }
     
-    @GetMapping(value = "/events/{eventId}/has_picture")
-    public boolean hasUserProfilePicture(@PathVariable("eventId") String eventId) throws ErsException {
+    @GetMapping("/events/{eventId}/has_picture")
+    public boolean hasEventPicture(@PathVariable String eventId) throws ErsException {
 
         User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
@@ -202,6 +203,82 @@ public class EventController {
         boolean result = eventService.hasUserProfilePicture(eventId);
 
         return result;
+    }
+    
+    @PostMapping("/events/{eventId}/registration-options")
+    public EventRegistrationOptionDto addEventRegistrationOption(
+            @PathVariable String eventId,
+            @RequestBody EventRegistrationOptionDto dto
+    ) throws ErsException {
+        
+        User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        LOGGER.info("{} is adding a new event registration option to event {}", loggedUser.getEmail(), eventId);
+        
+        EventRegistrationOptionDto result = eventService.saveEventRegistrationOption(loggedUser, eventId, dto);
+        
+        return result;
+    }
+    
+    @PutMapping("/events/{eventId}/registration-options/{optionId}")
+    public EventRegistrationOptionDto updateEventRegistrationOption(
+            @PathVariable String eventId,
+            @PathVariable String optionId,
+            @RequestBody EventRegistrationOptionDto dto
+    ) throws ErsException {
+        
+        User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        LOGGER.info("{} is updating the registration option {} to event {}", loggedUser.getEmail(), optionId, eventId);
+        
+        EventRegistrationOptionDto result = eventService.updateEventRegistrationOption(loggedUser, eventId, optionId, dto);
+        
+        return result;
+    }
+    
+    @GetMapping("/events/{eventId}/registration-options")
+    public List<EventRegistrationOptionDto> getEventRegistrationOptionsByEvent(
+            @PathVariable String eventId
+    ) throws ErsException {
+        
+        User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        LOGGER.info("{} is getting all the registration options of the event {}", loggedUser.getEmail(), eventId);
+        
+        List<EventRegistrationOptionDto> options = eventService.getRegistrationOptionsByEventId(loggedUser, eventId);
+        
+        return options;
+    }
+    
+    @DeleteMapping("/events/{eventId}/registration-options/{optionId}")
+    public boolean deleteEventRegistrationOption(
+            @PathVariable String eventId,
+            @PathVariable String optionId
+    ) throws ErsException {
+        
+        User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        LOGGER.info("{} is removing the registration option {} of the event {}", loggedUser.getEmail(), optionId, eventId);
+        
+        eventService.deleteEventRegistrationOption(loggedUser, eventId, optionId);
+        
+        return true;
+    }
+    
+    @PostMapping("/events/{eventId}/users/{userId}/registrations/{registrationOptionId}")
+    public boolean registerUserToEvent(
+            @PathVariable String eventId, 
+            @PathVariable String userId, 
+            @PathVariable String registrationOptionId
+    ) throws ErsException {
+        
+        User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        LOGGER.info("{} is registering user {} to event {} with option {}", loggedUser.getEmail(), userId, eventId, registrationOptionId);
+        
+        eventService.registerUserToEvent(loggedUser, userId, eventId, registrationOptionId);
+        
+        return true;
     }
 
 }

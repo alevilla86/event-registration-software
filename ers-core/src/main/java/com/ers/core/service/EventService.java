@@ -5,13 +5,19 @@ package com.ers.core.service;
 
 import com.ers.core.dao.EventDao;
 import com.ers.core.dao.EventPictureDao;
+import com.ers.core.dao.UserJoinEventDao;
 import com.ers.core.dto.EventDto;
+import com.ers.core.dto.EventRegistrationOptionDto;
 import com.ers.core.exception.ErsAccessDeniedException;
 import com.ers.core.exception.ErsErrorCode;
 import com.ers.core.exception.ErsException;
+import com.ers.core.orm.Currency;
 import com.ers.core.orm.Event;
 import com.ers.core.orm.EventPicture;
+import com.ers.core.orm.EventRegistrationOption;
 import com.ers.core.orm.User;
+import com.ers.core.orm.UserJoinEvent;
+import com.ers.core.orm.UserJoinEventId;
 import com.ers.core.util.EntityValidatorUtil;
 import com.ers.core.util.ImageUtils;
 import com.mchange.io.FileUtils;
@@ -40,6 +46,15 @@ public class EventService {
     
     @Autowired
     private EventDao eventDao;
+    
+    @Autowired
+    private UserJoinEventDao userJoinEventDao;
+    
+    @Autowired
+    private UserService userService;
+    
+    @Autowired
+    private EventRegistrationOptionService optionService;
     
     @Autowired
     private EntityValidatorUtil validator;
@@ -357,6 +372,276 @@ public class EventService {
         LOGGER.info("User {} has {} events created by him", loggedUser.getEmail(), result.size());
         
         return result;
+    }
+    
+    /**
+     * Saves a new event registration option for an existing event.
+     * 
+     * @param loggedUser
+     * @param eventId
+     * @param dto
+     * @return
+     * @throws ErsException 
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public EventRegistrationOptionDto saveEventRegistrationOption(User loggedUser, String eventId, EventRegistrationOptionDto dto) throws ErsException {
+        
+        if (!loggedUser.isAdminOrOrganizer()) {
+            throw new ErsAccessDeniedException("Only ADMIN and ORGANIZER can add event options");
+        }
+        
+        if (StringUtils.isBlank(eventId)) {
+            throw new ErsException("Event id is missing to save a registration option", ErsErrorCode.PARAMETER_MISSING);
+        }
+        
+        Event event = eventDao.getById(eventId);
+        
+        if (event == null) {
+            throw new ErsException("EventRegistration option can not be saved because the event not exists", ErsErrorCode.NOT_FOUND_EVENT);
+        }
+        
+        //Validate the user adding the option to the event is the one who created the event.
+        if (!StringUtils.equals(loggedUser.getId(), event.getCreatedByUserId()) && !loggedUser.isAdmin()) {
+            throw new ErsAccessDeniedException("Only the user who created the event or an ADMIN can add registration options");
+        }
+        
+        EventRegistrationOption option = new EventRegistrationOption();
+        option.setEvent(event);
+        option.setName(dto.getName());
+        option.setDescription(dto.getDescription());
+        option.setRegistrationCost(dto.getRegistrationCost());
+        option.setRegistrationCostCurrency(Currency.getByName(dto.getRegistrationCostCurrency()));
+        
+        //This methods makes all validations of fields.
+        option = optionService.saveEventRegistrationOption(option);
+        
+        EventRegistrationOptionDto result = optionService.convertEventToEventRegistrationOptionDto(option);
+        
+        LOGGER.info("User {} saved a new event registration option [eventid={}, eventName={}, optionId={}, optionName={}]", loggedUser.getEmail(), event.getId(), event.getName(), option.getId(), option.getName());
+        
+        return result;
+    }
+    
+    /**
+     * Updates an existing event registration option.
+     * 
+     * @param loggedUser
+     * @param eventId
+     * @param optionId
+     * @param updatedDto
+     * @return
+     * @throws ErsException 
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public EventRegistrationOptionDto updateEventRegistrationOption(User loggedUser, String eventId, String optionId, EventRegistrationOptionDto updatedDto) throws ErsException {
+        
+        if (!loggedUser.isAdminOrOrganizer()) {
+            throw new ErsAccessDeniedException("Only ADMIN and ORGANIZER can update event options");
+        }
+        
+        if (StringUtils.isBlank(eventId)) {
+            throw new ErsException("Event id is missing to update a registration option", ErsErrorCode.PARAMETER_MISSING);
+        }
+        
+        Event event = eventDao.getById(eventId);
+        
+        if (event == null) {
+            throw new ErsException("EventRegistration option can not be updated because the event not exists", ErsErrorCode.NOT_FOUND_EVENT);
+        }
+        
+        //Validate the user adding the option to the event is the one who created the event.
+        if (!StringUtils.equals(loggedUser.getId(), event.getCreatedByUserId()) && !loggedUser.isAdmin()) {
+            throw new ErsAccessDeniedException("Only the user who created the event or an ADMIN can update registration options");
+        }
+        
+        EventRegistrationOption existingOption = optionService.getEventRegistrationOptionById(optionId);
+        
+        if (existingOption == null) {
+            throw new ErsException("EventRegistration option not exists", ErsErrorCode.NOT_FOUND_EVENT_OPTION);
+        }
+        
+        //Validate the option is from the specified event.
+        validateIfRegistrationOptionIsFromEvent(existingOption, event);
+        
+        existingOption.setName(updatedDto.getName());
+        existingOption.setDescription(updatedDto.getDescription());
+        existingOption.setRegistrationCost(updatedDto.getRegistrationCost());
+        existingOption.setRegistrationCostCurrency(Currency.getByName(updatedDto.getRegistrationCostCurrency()));
+        
+        //This method validates all the fields.
+        optionService.updateEventRegistrationOption(existingOption);
+        
+        EventRegistrationOptionDto result = optionService.convertEventToEventRegistrationOptionDto(existingOption);
+        
+        LOGGER.info("User {} updated an existing event registration option [eventid={}, eventName={}, optionId={}, optionName={}]", loggedUser.getEmail(), event.getId(), event.getName(), existingOption.getId(), existingOption.getName());
+        
+        return result;
+    }
+    
+    /**
+     * Gets the list of event registration options for an event.
+     * 
+     * @param loggedUser
+     * @param eventId
+     * @return
+     * @throws ErsException 
+     */
+    @Transactional(readOnly = true)
+    public List<EventRegistrationOptionDto> getRegistrationOptionsByEventId(User loggedUser, String eventId) throws ErsException {
+        
+        if (StringUtils.isBlank(eventId)) {
+            throw new ErsException("Event id is missing to get the registration options", ErsErrorCode.PARAMETER_MISSING);
+        }
+        
+        Event event = eventDao.getById(eventId);
+        
+        if (event == null) {
+            throw new ErsException("EventRegistration options can not be retrieved because the event not exists", ErsErrorCode.NOT_FOUND_EVENT);
+        }
+        
+        List<EventRegistrationOption> options = optionService.getEventRegistrationOptionsByEventId(eventId);
+        
+        if (options.isEmpty()) {
+            return Collections.EMPTY_LIST;
+        }
+        
+        List<EventRegistrationOptionDto> result = new ArrayList<>(options.size());
+        
+        for (EventRegistrationOption option : options) {
+            EventRegistrationOptionDto dto = optionService.convertEventToEventRegistrationOptionDto(option);
+            result.add(dto);
+        }
+        
+        return result;
+    }
+    
+    /**
+     * Deletes an event registration option.
+     * 
+     * @param loggedUser
+     * @param eventId
+     * @param optionId
+     * @throws ErsException 
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteEventRegistrationOption(User loggedUser, String eventId, String optionId) throws ErsException {
+        
+        if (!loggedUser.isAdminOrOrganizer()) {
+            throw new ErsAccessDeniedException("Only ADMIN and ORGANIZER can delete event options");
+        }
+        
+        if (StringUtils.isBlank(optionId) || StringUtils.isBlank(eventId)) {
+            throw new ErsException("Option id is required to delete the option", ErsErrorCode.PARAMETER_MISSING);
+        }
+        
+        Event event = eventDao.getById(eventId);
+        
+        if (event == null) {
+            LOGGER.warn("Trying to delete a registration option for a non-existing event");
+            return;
+        }
+        
+        EventRegistrationOption option;
+        
+        try {
+            
+            option = optionService.getEventRegistrationOptionById(optionId);
+            
+        } catch (ErsException ex) {
+            LOGGER.warn("Trying to delete a non-existing EventRegistration option {}", optionId);
+            return;
+        }
+        
+        //Validate the option is from the specified event.
+        validateIfRegistrationOptionIsFromEvent(option, event);
+        
+        //Validate the user adding the option to the event is the one who created the event.
+        if (!StringUtils.equals(loggedUser.getId(), event.getCreatedByUserId()) && !loggedUser.isAdmin()) {
+            throw new ErsAccessDeniedException("Only the user who created the event or an ADMIN can delete registration options");
+        }
+        
+        optionService.deleteEventRegistrationOption(option);
+        
+        LOGGER.info("User {} has deleted the EventRegistrationOption {} with name {}", loggedUser.getEmail(), option.getName(), option.getName());
+    }
+    
+    /**
+     * Register an user to an event.
+     * Validates the event, the user and option exists and the dates are correct.
+     * 
+     * @param loggedUser
+     * @param userId
+     * @param eventId
+     * @param registrationOptionId
+     * @throws ErsException 
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void registerUserToEvent(User loggedUser, String userId, String eventId, String registrationOptionId) throws ErsException {
+        
+        //First validate the params.
+        if (StringUtils.isBlank(userId) || StringUtils.isBlank(eventId) || StringUtils.isBlank(registrationOptionId)) {
+            throw new ErsException("To register an user to an event userId, eventId and registrationOptionId are required", ErsErrorCode.PARAMETER_MISSING);
+        }
+        
+        //Get the event.
+        Event event = eventDao.getById(eventId);
+        
+        if (event == null) {
+            throw new ErsException("Trying to register an user to a non-existing event", ErsErrorCode.NOT_FOUND_EVENT);
+        }
+        
+        //Get the user.
+        User user = userService.getUserById(userId);
+        
+        //Get the registration option.
+        EventRegistrationOption option = optionService.getEventRegistrationOptionById(registrationOptionId);
+        
+        //The event exists, the user exists, the registration option exists.
+        //Verify the option corresponds to the event.
+        validateIfRegistrationOptionIsFromEvent(option, event);
+        
+        Date now = new Date();
+        
+        //Verify the event is still accepting registrations.
+        if (now.after(event.getDateLimitRegister())) {
+            throw new ErsException("Revent registration date has expired", ErsErrorCode.EVENT_REGISTRATION_DATE_EXPIRED);
+        }
+        
+        //Build the user join event.
+        UserJoinEventId joinEventId = new UserJoinEventId(userId, eventId);
+        UserJoinEvent joinEvent = new UserJoinEvent();
+        joinEvent.setId(joinEventId);
+        joinEvent.setEvent(event);
+        joinEvent.setUser(user);
+        joinEvent.setCurrency(option.getRegistrationCostCurrency());
+        joinEvent.setAmountPaid(option.getRegistrationCost());
+        joinEvent.setRegisteredByUserId(loggedUser.getId());
+        joinEvent.setRegisteredByUserEmail(loggedUser.getEmail());
+        joinEvent.setDateRegistered(now);
+        
+        validator.validateUserJoinEvent(joinEvent);
+        
+        userJoinEventDao.save(joinEvent);
+        
+        //TODO: payment goes here. if an exception is thrown during payment the
+        //tx will be rolled back and not saved the user in the user_join_event table.
+        //Include in the user_join_event table a confirmation_id for payment.
+        
+        LOGGER.info("User {} registered user {} to the event [eventId={}, eventName={}] with the event option [optionId={}, optionName={}]", 
+                loggedUser.getEmail(), user.getEmail(), event.getId(), event.getName(), option.getId(), option.getName());
+    }
+    
+    /**
+     * Validates if an option for registration is saved for an specific event.
+     * 
+     * @param option
+     * @param event
+     * @throws ErsException 
+     */
+    private void validateIfRegistrationOptionIsFromEvent(EventRegistrationOption option, Event event) throws ErsException {
+        if (!StringUtils.equals(option.getEvent().getId(), event.getId())) {
+            throw new ErsException("Event and option exists but the option is for another event", ErsErrorCode.EVENT_REGISTRATION_OPTION_CORRESPONDS_TO_OTHER_EVENT);
+        }
     }
 
 }
