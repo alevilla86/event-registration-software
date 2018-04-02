@@ -613,7 +613,7 @@ public class EventService {
         
         //Verify the event is still accepting registrations.
         if (now.after(event.getDateLimitRegister())) {
-            throw new ErsException("Revent registration date has expired", ErsErrorCode.EVENT_REGISTRATION_DATE_EXPIRED);
+            throw new ErsException("Event registration date has expired", ErsErrorCode.EVENT_REGISTRATION_DATE_EXPIRED);
         }
         
         //Build the user join event.
