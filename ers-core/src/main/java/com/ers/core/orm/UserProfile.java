@@ -59,19 +59,6 @@ public class UserProfile implements java.io.Serializable {
             return null;
         }
     }
-    
-    public enum ShirtSize {
-        XS, S, M, L, XL, XL2;
-        
-        public static ShirtSize getByName(String name) {
-            for(ShirtSize shirtSize : values()) {
-                if (StringUtils.equalsIgnoreCase(name, shirtSize.name())) {
-                    return shirtSize;
-                }
-            }
-            return null;
-        }
-    }
 
     private String userId;
     private User user;

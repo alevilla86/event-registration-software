@@ -18,6 +18,7 @@ import com.ers.core.orm.EventRegistrationOption;
 import com.ers.core.orm.User;
 import com.ers.core.orm.UserJoinEvent;
 import com.ers.core.orm.UserJoinEventId;
+import com.ers.core.orm.UserProfile;
 import com.ers.core.util.EntityValidatorUtil;
 import com.ers.core.util.ImageUtils;
 import com.mchange.io.FileUtils;
@@ -593,8 +594,11 @@ public class EventService {
         //Get the user.
         User user = userService.getUserById(userId);
         
+        //Load the user profile.
+        UserProfile userProfile = user.getUserProfile();
+        
         //Only users with the profile completed can be registered.
-        if (!validator.isUserProfileComplete(user.getUserProfile(), User.Type.USER)) {
+        if (!validator.isUserProfileComplete(userProfile, User.Type.USER)) {
             throw new ErsException("In order to complete the registration process we need the user profile information to be complete", ErsErrorCode.USER_PROFILE_NOT_COMPLETED);
         }
         
@@ -623,6 +627,10 @@ public class EventService {
         joinEvent.setRegisteredByUserId(loggedUser.getId());
         joinEvent.setRegisteredByUserEmail(loggedUser.getEmail());
         joinEvent.setDateRegistered(now);
+        
+        //Category and shirt size are not required.
+        joinEvent.setCategory(userProfile.getCategory().getName());
+        joinEvent.setShirtSize(userProfile.getShirtSize());
         
         validator.validateUserJoinEvent(joinEvent);
         

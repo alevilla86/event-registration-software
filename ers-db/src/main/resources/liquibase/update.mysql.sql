@@ -349,3 +349,14 @@ ADD COLUMN `registered_by_user_email` VARCHAR(128) NOT NULL AFTER `registered_by
 --comment user_join_event needed currency field
 ALTER TABLE `user_join_event` 
 ADD COLUMN `currency` ENUM('CRC', 'USD') NOT NULL AFTER `amount_paid`;
+
+--changeset avillalobos:user_join_event-category-2018-APR-02-12-11
+--comment user_join_event needed category field
+ALTER TABLE `user_join_event` 
+ADD COLUMN `category` VARCHAR(128) NULL AFTER `registered_by_user_email`;
+
+--changeset avillalobos:user_join_event-shirt-2018-APR-02-12-11
+--comment user_join_event needed shirt field
+ALTER TABLE `user_join_event` 
+ADD COLUMN `shirt_size` ENUM('XS', 'S', 'M', 'L', 'XL', 'XL2') NULL AFTER `category`;
+

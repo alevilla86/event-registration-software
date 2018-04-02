@@ -11,6 +11,7 @@ import com.ers.core.exception.ErsErrorCode;
 import com.ers.core.exception.ErsException;
 import com.ers.core.orm.Category;
 import com.ers.core.orm.Role;
+import com.ers.core.orm.ShirtSize;
 import com.ers.core.orm.User;
 import com.ers.core.orm.UserProfile;
 import com.ers.core.orm.UserProfilePicture;
@@ -157,7 +158,7 @@ public class UserProfileService {
         existingProfile.setStreet2(updatedProfile.getStreet2());
         existingProfile.setEmergencyContactName(updatedProfile.getEmergencyContactName());
         existingProfile.setEmergencyContactPhone(updatedProfile.getEmergencyContactPhone());
-        existingProfile.setShirtSize(UserProfile.ShirtSize.getByName(updatedProfile.getShirtSize()));
+        existingProfile.setShirtSize(ShirtSize.getByName(updatedProfile.getShirtSize()));
         
         /*
         Not all user types requires a ROLE and a CATEGORY.

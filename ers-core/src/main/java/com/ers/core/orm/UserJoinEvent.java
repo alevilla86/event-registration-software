@@ -34,6 +34,8 @@ public class UserJoinEvent implements java.io.Serializable {
     private Currency currency;
     private String registeredByUserId;
     private String registeredByUserEmail;
+    private String category;
+    private ShirtSize shirtSize;
 
     public UserJoinEvent() {
     }
@@ -117,4 +119,23 @@ public class UserJoinEvent implements java.io.Serializable {
         this.registeredByUserEmail = registeredByUserEmail;
     }
 
+    @Column(name = "category", length = 128)
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+    
+    @Enumerated(EnumType.STRING)
+    @Column(name = "shirt_size")
+    public ShirtSize getShirtSize() {
+        return this.shirtSize;
+    }
+
+    public void setShirtSize(ShirtSize shirtSize) {
+        this.shirtSize = shirtSize;
+    }
+    
 }

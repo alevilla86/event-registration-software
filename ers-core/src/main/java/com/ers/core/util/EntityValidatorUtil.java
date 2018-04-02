@@ -121,7 +121,7 @@ public class EntityValidatorUtil {
         }
         
         if (userProfile.getHand() == null) {
-            throw new ErsException("User government hand is missing", ErsErrorCode.MISSING_INFORMATION_USER_PROFILE);
+            throw new ErsException("User hand is missing", ErsErrorCode.MISSING_INFORMATION_USER_PROFILE);
         }
         
         if (userProfile.getDateBirth() == null) {
@@ -137,7 +137,7 @@ public class EntityValidatorUtil {
         }
         
         if (userProfile.getGenre() == null) {
-            throw new ErsException("User government idgenre is missing", ErsErrorCode.MISSING_INFORMATION_USER_PROFILE);
+            throw new ErsException("User genre is missing", ErsErrorCode.MISSING_INFORMATION_USER_PROFILE);
         }
         
         if (StringUtils.isBlank(userProfile.getCountry())) {
@@ -183,6 +183,7 @@ public class EntityValidatorUtil {
         try {
             validateUserProfileFields(userProfile, type);
         } catch (ErsException ex) {
+            LOGGER.warn("User profile is not complete: {}", ex.getMessage());
             return false;
         }
         
